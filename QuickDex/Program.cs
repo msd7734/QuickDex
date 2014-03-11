@@ -23,12 +23,12 @@ namespace QuickDex
         /// </summary>
         static void Main(string[] args)
         {
-            /*
+            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainWnd());
-             * */
 
+            /*
             Cache myCache;
             ApiPokedex myPokedex;
 
@@ -49,7 +49,7 @@ namespace QuickDex
                 myPokedex = PokeQuery.GetPokedex();
                 myCache.CachePokedex(myPokedex);
             }
-
+            */
             
             //Code for testing through the command line.
 

@@ -32,10 +32,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWnd));
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.searchBtn = new System.Windows.Forms.Button();
             this.searchBox = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.searchBtn = new System.Windows.Forms.Button();
+            this.msgDisplay = new System.Windows.Forms.RichTextBox();
+            this.searchSrcSelect = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // notifyIcon
@@ -48,30 +52,13 @@
             // 
             this.groupBox1.Controls.Add(this.searchBtn);
             this.groupBox1.Controls.Add(this.searchBox);
-            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(13, 13);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(414, 52);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Search by Pokémon name or National Dex number";
-            // 
-            // searchBox
-            // 
-            this.searchBox.Location = new System.Drawing.Point(6, 19);
-            this.searchBox.Name = "searchBox";
-            this.searchBox.Size = new System.Drawing.Size(285, 20);
-            this.searchBox.TabIndex = 0;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(14, 74);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(412, 131);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Options";
             // 
             // searchBtn
             // 
@@ -83,6 +70,56 @@
             this.searchBtn.Text = "Search";
             this.searchBtn.UseVisualStyleBackColor = true;
             // 
+            // searchBox
+            // 
+            this.searchBox.Location = new System.Drawing.Point(6, 19);
+            this.searchBox.Name = "searchBox";
+            this.searchBox.Size = new System.Drawing.Size(285, 20);
+            this.searchBox.TabIndex = 0;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.searchSrcSelect);
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox2.Location = new System.Drawing.Point(14, 74);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(139, 131);
+            this.groupBox2.TabIndex = 1;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Options";
+            // 
+            // msgDisplay
+            // 
+            this.msgDisplay.BackColor = System.Drawing.SystemColors.Control;
+            this.msgDisplay.CausesValidation = false;
+            this.msgDisplay.Cursor = System.Windows.Forms.Cursors.Default;
+            this.msgDisplay.Location = new System.Drawing.Point(159, 85);
+            this.msgDisplay.Name = "msgDisplay";
+            this.msgDisplay.ReadOnly = true;
+            this.msgDisplay.ShortcutsEnabled = false;
+            this.msgDisplay.Size = new System.Drawing.Size(256, 120);
+            this.msgDisplay.TabIndex = 1;
+            this.msgDisplay.TabStop = false;
+            this.msgDisplay.Text = "";
+            this.msgDisplay.WordWrap = false;
+            // 
+            // searchSrcSelect
+            // 
+            this.searchSrcSelect.FormattingEnabled = true;
+            this.searchSrcSelect.Location = new System.Drawing.Point(7, 20);
+            this.searchSrcSelect.Name = "searchSrcSelect";
+            this.searchSrcSelect.Size = new System.Drawing.Size(121, 21);
+            this.searchSrcSelect.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(159, 69);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(42, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Results";
+            // 
             // MainWnd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -90,6 +127,8 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(439, 212);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.msgDisplay);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -101,7 +140,9 @@
             this.Text = "QuickDex";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -112,6 +153,9 @@
         private System.Windows.Forms.TextBox searchBox;
         private System.Windows.Forms.Button searchBtn;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.ComboBox searchSrcSelect;
+        private System.Windows.Forms.RichTextBox msgDisplay;
+        private System.Windows.Forms.Label label1;
     }
 }
 

@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace QuickDex
 {
-    class SerebiiReferrer : ISiteReferrer
+    class SerebiiReferrer : ISearchStrategy
     {
         #region Generation Name Mapping
         private static readonly Dictionary<PokeGeneration, string> GEN_URL_MAP
@@ -19,21 +19,31 @@ namespace QuickDex
             };
         #endregion
 
-        public SerebiiReferrer() { }
+        private Cache cache;
+
+        /// <summary>
+        /// Construct a SearchStrategy for serebii.com
+        /// </summary>
+        /// <param name="dataCache">The cache of pokemon data to use in search operations</param>
+        public SerebiiReferrer(Cache dataCache)
+        {
+            cache = dataCache;
+        }
 
         public string GetName()
         {
             return "Serebii";
         }
 
-        public void GotoPokemonEntry(int dexNum, PokeGeneration gen)
+        public string GotoPokemonEntry(int dexNum, PokeGeneration gen)
         {
             string paddedDexNum = Util.To3DigitStr(dexNum);
             string url = "http://www.serebii.net/" + GEN_URL_MAP[gen] + "/" + paddedDexNum + ".shtml";
             Process.Start(url);
+            return "Success";
         }
 
-        public void GotoPokemonEntry(string pokemon, PokeGeneration gen)
+        public string GotoPokemonEntry(string pokemon, PokeGeneration gen)
         {
             //Serebii's pages are based on National Dex #, so need to look up from given pokemon name
             throw new NotImplementedException();

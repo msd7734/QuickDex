@@ -13,10 +13,12 @@ namespace QuickDex
 {
     public partial class MainWnd : Form
     {
+        private List<ISearchStrategy> searchOptions;
+
         public MainWnd()
         {
             InitializeComponent();
-
+            //NOTE: Upon searching, remember to disable the form controls until the search is done.
             Rectangle screen = Screen.PrimaryScreen.WorkingArea;
             int wndX = screen.Width - this.Width;
             int wndY = screen.Height - this.Height;
