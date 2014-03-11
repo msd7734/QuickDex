@@ -39,6 +39,32 @@ namespace QuickDex
             this.searchSrcSelect.DataSource = searchNames.ToList();
         }
 
+        private void searchBtn_Click(object sender, EventArgs e)
+        {
+            int index = this.searchSrcSelect.SelectedIndex;
+            ISearchStrategy strat = searchOptions[index];
+
+            try
+            {
+                int dexNum = -1;
+                string result;
+                if (int.TryParse(this.searchBox.Text, out dexNum))
+                {
+                    result = strat.GotoPokemonEntry(dexNum, PokeGeneration.XY);
+                }
+                else
+                {
+                    result = strat.GotoPokemonEntry(this.searchBox.Text, PokeGeneration.XY);
+                }
+
+                this.msgDisplay.Text = result;
+            }
+            catch (NotImplementedException nie)
+            {
+                this.msgDisplay.Text = nie.Message;
+            }
+        }
+
         //NOTE: Upon searching, remember to disable the form controls until the search is done.
     }
 }

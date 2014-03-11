@@ -38,6 +38,7 @@
             this.searchSrcSelect = new System.Windows.Forms.ComboBox();
             this.msgDisplay = new System.Windows.Forms.RichTextBox();
             this.resultsLbl = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -69,6 +70,7 @@
             this.searchBtn.TabIndex = 1;
             this.searchBtn.Text = "Search";
             this.searchBtn.UseVisualStyleBackColor = true;
+            this.searchBtn.Click += new System.EventHandler(this.searchBtn_Click);
             // 
             // searchBox
             // 
@@ -79,6 +81,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.searchSrcSelect);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(14, 74);
@@ -90,8 +93,9 @@
             // 
             // searchSrcSelect
             // 
+            this.searchSrcSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.searchSrcSelect.FormattingEnabled = true;
-            this.searchSrcSelect.Location = new System.Drawing.Point(7, 20);
+            this.searchSrcSelect.Location = new System.Drawing.Point(6, 32);
             this.searchSrcSelect.Name = "searchSrcSelect";
             this.searchSrcSelect.Size = new System.Drawing.Size(121, 21);
             this.searchSrcSelect.TabIndex = 0;
@@ -121,6 +125,15 @@
             this.resultsLbl.TabIndex = 2;
             this.resultsLbl.Text = "Results";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(5, 18);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(81, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Search Source:";
+            // 
             // MainWnd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -142,6 +155,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -157,6 +171,7 @@
         private System.Windows.Forms.ComboBox searchSrcSelect;
         private System.Windows.Forms.RichTextBox msgDisplay;
         private System.Windows.Forms.Label resultsLbl;
+        private System.Windows.Forms.Label label1;
     }
 }
 
