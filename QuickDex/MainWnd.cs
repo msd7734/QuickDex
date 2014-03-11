@@ -68,7 +68,7 @@ namespace QuickDex
         {
             this.msgDisplay.Text = msg;
             this.msgDisplay.SelectionStart = 0;
-            this.msgDisplay.SelectionLength = msg.Length();
+            this.msgDisplay.SelectionLength = msg.Length;
             this.msgDisplay.SelectionColor = color;
         }
         #endregion
