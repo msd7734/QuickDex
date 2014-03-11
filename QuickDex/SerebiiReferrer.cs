@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using QuickDex.Pokeapi;
 
 namespace QuickDex
 {
-    class SerebiiReferrer : ISearchStrategy
+    public class SerebiiReferrer : ISearchStrategy
     {
         #region Generation Name Mapping
         private static readonly Dictionary<PokeGeneration, string> GEN_URL_MAP
@@ -19,15 +20,15 @@ namespace QuickDex
             };
         #endregion
 
-        private Cache cache;
+        private ApiPokedex pokedex;
 
         /// <summary>
         /// Construct a SearchStrategy for serebii.com
         /// </summary>
         /// <param name="dataCache">The cache of pokemon data to use in search operations</param>
-        public SerebiiReferrer(Cache dataCache)
+        public SerebiiReferrer(ApiPokedex pokedex)
         {
-            cache = dataCache;
+            this.pokedex = pokedex;
         }
 
         public string GetName()

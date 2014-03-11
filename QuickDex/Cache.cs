@@ -14,7 +14,7 @@ namespace QuickDex
     /// resource per day). 
     /// IDEA: Make this disposable and save the MD5 on dispose to maintain cache integrity
     /// </summary>
-    class Cache
+    public class Cache
     {
         public static readonly string FileName = ".cache";
 

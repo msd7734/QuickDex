@@ -23,12 +23,6 @@ namespace QuickDex
         /// </summary>
         static void Main(string[] args)
         {
-            
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainWnd());
-
-            /*
             Cache myCache;
             ApiPokedex myPokedex;
 
@@ -49,7 +43,17 @@ namespace QuickDex
                 myPokedex = PokeQuery.GetPokedex();
                 myCache.CachePokedex(myPokedex);
             }
-            */
+
+            List<ISearchStrategy> searchStrats = new List<ISearchStrategy>()
+            {
+                new QuickDex(myPokedex),
+                new BulbapediaReferrer(myPokedex),
+                new SerebiiReferrer(myPokedex)
+            };
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainWnd(searchStrats));
             
             //Code for testing through the command line.
 

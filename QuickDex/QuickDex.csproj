@@ -73,8 +73,8 @@
     <Compile Include="MainWnd.Designer.cs">
       <DependentUpon>MainWnd.cs</DependentUpon>
     </Compile>
-    <Compile Include="ISiteReferrer.cs" />
-    <Compile Include="Pokedex.cs" />
+    <Compile Include="ISearchStrategy.cs" />
+    <Compile Include="QuickDex.cs" />
     <Compile Include="PokeGeneration.cs" />
     <Compile Include="PokeQuery.cs" />
     <Compile Include="PokeType.cs" />

@@ -35,9 +35,9 @@
             this.searchBtn = new System.Windows.Forms.Button();
             this.searchBox = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.msgDisplay = new System.Windows.Forms.RichTextBox();
             this.searchSrcSelect = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.msgDisplay = new System.Windows.Forms.RichTextBox();
+            this.resultsLbl = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -88,11 +88,20 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Options";
             // 
+            // searchSrcSelect
+            // 
+            this.searchSrcSelect.FormattingEnabled = true;
+            this.searchSrcSelect.Location = new System.Drawing.Point(7, 20);
+            this.searchSrcSelect.Name = "searchSrcSelect";
+            this.searchSrcSelect.Size = new System.Drawing.Size(121, 21);
+            this.searchSrcSelect.TabIndex = 0;
+            // 
             // msgDisplay
             // 
             this.msgDisplay.BackColor = System.Drawing.SystemColors.Control;
             this.msgDisplay.CausesValidation = false;
             this.msgDisplay.Cursor = System.Windows.Forms.Cursors.Default;
+            this.msgDisplay.Enabled = false;
             this.msgDisplay.Location = new System.Drawing.Point(159, 85);
             this.msgDisplay.Name = "msgDisplay";
             this.msgDisplay.ReadOnly = true;
@@ -103,22 +112,14 @@
             this.msgDisplay.Text = "";
             this.msgDisplay.WordWrap = false;
             // 
-            // searchSrcSelect
+            // resultsLbl
             // 
-            this.searchSrcSelect.FormattingEnabled = true;
-            this.searchSrcSelect.Location = new System.Drawing.Point(7, 20);
-            this.searchSrcSelect.Name = "searchSrcSelect";
-            this.searchSrcSelect.Size = new System.Drawing.Size(121, 21);
-            this.searchSrcSelect.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(159, 69);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(42, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Results";
+            this.resultsLbl.AutoSize = true;
+            this.resultsLbl.Location = new System.Drawing.Point(159, 69);
+            this.resultsLbl.Name = "resultsLbl";
+            this.resultsLbl.Size = new System.Drawing.Size(42, 13);
+            this.resultsLbl.TabIndex = 2;
+            this.resultsLbl.Text = "Results";
             // 
             // MainWnd
             // 
@@ -127,7 +128,7 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(439, 212);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.resultsLbl);
             this.Controls.Add(this.msgDisplay);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -155,7 +156,7 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.ComboBox searchSrcSelect;
         private System.Windows.Forms.RichTextBox msgDisplay;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label resultsLbl;
     }
 }
 

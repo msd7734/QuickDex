@@ -6,7 +6,7 @@ namespace QuickDex
     /// <summary>
     /// Class to perform Pokemon lookup on third party sites.
     /// </summary>
-    interface ISearchStrategy
+    public interface ISearchStrategy
     {
         /// <summary>
         /// Return a name describing the type of referrer or its destination site

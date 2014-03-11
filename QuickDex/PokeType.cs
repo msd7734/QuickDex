@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QuickDex
 {
-    enum PokeType
+    public enum PokeType
     {
         Normal = 1,
         Fighting = 2,

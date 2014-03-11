@@ -2,7 +2,7 @@
 
 namespace QuickDex
 {
-    enum PokeGeneration
+    public enum PokeGeneration
     {
         RBY,
         GSC,

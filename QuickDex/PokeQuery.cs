@@ -12,7 +12,7 @@ namespace QuickDex
     /// Documentation at:
     /// http://pokeapi.co/docs/
     /// </summary>
-    class PokeQuery
+    public class PokeQuery
     {
         //Base string for query
         private static readonly string Q_BASE = @"http://pokeapi.co/api/v1/";
