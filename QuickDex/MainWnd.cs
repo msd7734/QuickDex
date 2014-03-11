@@ -16,6 +16,8 @@ namespace QuickDex
     /// </summary>
     public partial class MainWnd : Form
     {
+        private static readonly char ENTER_KEY = '\r';
+
         //Used to 
         private List<ISearchStrategy> searchOptions;
 
@@ -35,6 +37,7 @@ namespace QuickDex
             int wndY = screen.Height - this.Height;
             this.Location = new Point(wndX, wndY);
 
+            //Populate option dropdowns
             var searchNames = searchOptions.Select(x => x.GetName());
             this.searchSrcSelect.DataSource = searchNames.ToList();
 
@@ -64,13 +67,29 @@ namespace QuickDex
                 }
 
                 //TODO: Method to handle writing a message to display (/w color options)
-                this.msgDisplay.SelectionColor = Color.Green;
                 this.msgDisplay.Text = result;
+                this.msgDisplay.SelectionStart = 0;
+                this.msgDisplay.SelectionLength = result.Length;
+                this.msgDisplay.SelectionColor = Color.Green;
             }
             catch (NotImplementedException nie)
             {
-                this.msgDisplay.SelectionColor = Color.Red;
+                
                 this.msgDisplay.Text = nie.Message;
+                this.msgDisplay.SelectionStart = 0;
+                this.msgDisplay.SelectionLength = nie.Message.Length;
+                this.msgDisplay.SelectionColor = Color.Red;
+            }
+        }
+
+        //Turns out this isn't needed; just set the AcceptBtn property to use searchBtn_Click
+        //Keeping it around to handle potential future need to consume keypresses
+        private void MainWnd_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //To get this to work, had to set MainWnd.KeyPreview = true
+            if (e.KeyChar == ENTER_KEY)
+            {
+                searchBtn_Click(sender, e);
             }
         }
 

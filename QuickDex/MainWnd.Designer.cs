@@ -109,7 +109,6 @@
             this.msgDisplay.BackColor = System.Drawing.SystemColors.Control;
             this.msgDisplay.CausesValidation = false;
             this.msgDisplay.Cursor = System.Windows.Forms.Cursors.Default;
-            this.msgDisplay.Enabled = false;
             this.msgDisplay.Location = new System.Drawing.Point(159, 85);
             this.msgDisplay.Name = "msgDisplay";
             this.msgDisplay.ReadOnly = true;
@@ -158,6 +157,7 @@
             // 
             // MainWnd
             // 
+            this.AcceptButton = this.searchBtn;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
@@ -174,6 +174,7 @@
             this.Name = "MainWnd";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "QuickDex";
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.MainWnd_KeyPress);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
