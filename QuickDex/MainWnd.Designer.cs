@@ -38,7 +38,9 @@
             this.searchSrcSelect = new System.Windows.Forms.ComboBox();
             this.msgDisplay = new System.Windows.Forms.RichTextBox();
             this.resultsLbl = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.searchSourceLbl = new System.Windows.Forms.Label();
+            this.generationLbl = new System.Windows.Forms.Label();
+            this.genSelect = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -81,7 +83,9 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.genSelect);
+            this.groupBox2.Controls.Add(this.generationLbl);
+            this.groupBox2.Controls.Add(this.searchSourceLbl);
             this.groupBox2.Controls.Add(this.searchSrcSelect);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(14, 74);
@@ -125,14 +129,32 @@
             this.resultsLbl.TabIndex = 2;
             this.resultsLbl.Text = "Results";
             // 
-            // label1
+            // searchSourceLbl
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 18);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(81, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Search Source:";
+            this.searchSourceLbl.AutoSize = true;
+            this.searchSourceLbl.Location = new System.Drawing.Point(5, 18);
+            this.searchSourceLbl.Name = "searchSourceLbl";
+            this.searchSourceLbl.Size = new System.Drawing.Size(81, 13);
+            this.searchSourceLbl.TabIndex = 1;
+            this.searchSourceLbl.Text = "Search Source:";
+            // 
+            // generationLbl
+            // 
+            this.generationLbl.AutoSize = true;
+            this.generationLbl.Location = new System.Drawing.Point(7, 60);
+            this.generationLbl.Name = "generationLbl";
+            this.generationLbl.Size = new System.Drawing.Size(62, 13);
+            this.generationLbl.TabIndex = 2;
+            this.generationLbl.Text = "Generation:";
+            // 
+            // genSelect
+            // 
+            this.genSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.genSelect.FormattingEnabled = true;
+            this.genSelect.Location = new System.Drawing.Point(5, 77);
+            this.genSelect.Name = "genSelect";
+            this.genSelect.Size = new System.Drawing.Size(121, 21);
+            this.genSelect.TabIndex = 3;
             // 
             // MainWnd
             // 
@@ -171,7 +193,9 @@
         private System.Windows.Forms.ComboBox searchSrcSelect;
         private System.Windows.Forms.RichTextBox msgDisplay;
         private System.Windows.Forms.Label resultsLbl;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label searchSourceLbl;
+        private System.Windows.Forms.Label generationLbl;
+        private System.Windows.Forms.ComboBox genSelect;
     }
 }
 

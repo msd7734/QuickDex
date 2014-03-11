@@ -37,6 +37,9 @@ namespace QuickDex
 
             var searchNames = searchOptions.Select(x => x.GetName());
             this.searchSrcSelect.DataSource = searchNames.ToList();
+
+            var genNames = Enum.GetNames(typeof(PokeGeneration));
+            this.genSelect.DataSource = genNames;
         }
 
         private void searchBtn_Click(object sender, EventArgs e)
@@ -48,23 +51,29 @@ namespace QuickDex
             {
                 int dexNum = -1;
                 string result;
+                PokeGeneration gen = PokeGeneration.XY;
+                Enum.TryParse<PokeGeneration>(this.genSelect.Text, out gen);
+
                 if (int.TryParse(this.searchBox.Text, out dexNum))
                 {
-                    result = strat.GotoPokemonEntry(dexNum, PokeGeneration.XY);
+                    result = strat.GotoPokemonEntry(dexNum, gen);
                 }
                 else
                 {
-                    result = strat.GotoPokemonEntry(this.searchBox.Text, PokeGeneration.XY);
+                    result = strat.GotoPokemonEntry(this.searchBox.Text, gen);
                 }
 
+                //TODO: Method to handle writing a message to display (/w color options)
+                this.msgDisplay.SelectionColor = Color.Green;
                 this.msgDisplay.Text = result;
             }
             catch (NotImplementedException nie)
             {
+                this.msgDisplay.SelectionColor = Color.Red;
                 this.msgDisplay.Text = nie.Message;
             }
         }
 
-        //NOTE: Upon searching, remember to disable the form controls until the search is done.
+        //TODO: Upon searching, remember to disable the form controls until the search is done.
     }
 }
