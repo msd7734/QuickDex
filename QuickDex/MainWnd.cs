@@ -18,6 +18,10 @@ namespace QuickDex
     {
         private static readonly char ENTER_KEY = '\r';
 
+        private static readonly Color COLOR_SUCCESS = Color.Green;
+        private static readonly Color COLOR_FAIL = Color.Red;
+        private static const Color COLOR_DEFAULT = Color.Black;
+
         //Used to 
         private List<ISearchStrategy> searchOptions;
 
@@ -45,6 +49,31 @@ namespace QuickDex
             this.genSelect.DataSource = genNames;
         }
 
+        #region Public Methods
+        /// <summary>
+        /// Display a message in the RichTextBox message area.
+        /// </summary>
+        /// <param name="msg">Message to display</param>
+        public void ShowMsg(string msg)
+        {
+            this.msgDisplay.Text = msg;
+        }
+
+        /// <summary>
+        /// Display a message in the RichTextBox message area.
+        /// </summary>
+        /// <param name="msg">Message to display</param>
+        /// <param name="color">Highlight all of msg with given color</param>
+        public void ShowMsg(string msg, Color color)
+        {
+            this.msgDisplay.Text = msg;
+            this.msgDisplay.SelectionStart = 0;
+            this.msgDisplay.SelectionLength = msg.Length();
+            this.msgDisplay.SelectionColor = color;
+        }
+        #endregion
+
+        #region Event Handlers
         private void searchBtn_Click(object sender, EventArgs e)
         {
             int index = this.searchSrcSelect.SelectedIndex;
@@ -66,33 +95,25 @@ namespace QuickDex
                     result = strat.GotoPokemonEntry(this.searchBox.Text, gen);
                 }
 
-                //TODO: Method to handle writing a message to display (/w color options)
-                this.msgDisplay.Text = result;
-                this.msgDisplay.SelectionStart = 0;
-                this.msgDisplay.SelectionLength = result.Length;
-                this.msgDisplay.SelectionColor = Color.Green;
+                ShowMsg(result, COLOR_SUCCESS);
             }
             catch (NotImplementedException nie)
             {
-                
-                this.msgDisplay.Text = nie.Message;
-                this.msgDisplay.SelectionStart = 0;
-                this.msgDisplay.SelectionLength = nie.Message.Length;
-                this.msgDisplay.SelectionColor = Color.Red;
+
+                ShowMsg(nie.Message, COLOR_FAIL);
             }
         }
 
         //Turns out this isn't needed; just set the AcceptBtn property to use searchBtn_Click
         //Keeping it around to handle potential future need to consume keypresses
+        //To do this, set MainWnd.KeyPreview = true
         private void MainWnd_KeyPress(object sender, KeyPressEventArgs e)
         {
-            //To get this to work, had to set MainWnd.KeyPreview = true
-            if (e.KeyChar == ENTER_KEY)
-            {
-                searchBtn_Click(sender, e);
-            }
+            
         }
 
         //TODO: Upon searching, remember to disable the form controls until the search is done.
     }
+
+        #endregion
 }
