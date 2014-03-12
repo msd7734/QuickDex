@@ -73,6 +73,22 @@ namespace QuickDex
         }
         #endregion
 
+        #region Private Methods
+        private Color GetColorFromSearchState(ISearchStrategy strat)
+        {
+            bool? success = strat.IsLastSearchSuccess();
+            if (success.HasValue)
+            {
+                return success.Value ? COLOR_SUCCESS : COLOR_FAIL;
+            }
+            else
+            {
+                return COLOR_DEFAULT;
+            }
+                
+        }
+        #endregion
+
         #region Event Handlers
         private void searchBtn_Click(object sender, EventArgs e)
         {
@@ -95,7 +111,7 @@ namespace QuickDex
                     result = strat.GotoPokemonEntry(this.searchBox.Text, gen);
                 }
 
-                ShowMsg(result, COLOR_SUCCESS);
+                ShowMsg(result, GetColorFromSearchState(strat));
             }
             catch (NotImplementedException nie)
             {

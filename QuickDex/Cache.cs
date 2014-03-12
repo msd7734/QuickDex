@@ -205,7 +205,9 @@ namespace QuickDex
                     while (reader.Read())
                     {
                         Pokemon p = new Pokemon();
-                        p.national_id = reader.GetInt32(PokemonCol["national_id"]);
+                        //national_id is not stored, it's computed on each call from the resource_uri
+                        //no need to set this but it may be slower, think of an alternative
+                        //p.national_id = reader.GetInt32(PokemonCol["national_id"]);
                         p.name = reader.GetString(PokemonCol["name"]);
                         p.resource_uri = reader.GetString(PokemonCol["resource_uri"]);
 

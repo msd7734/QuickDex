@@ -35,15 +35,12 @@ namespace QuickDex.Pokeapi
         {
             get
             {
+                //maybe find a way to store this instaed of calculating every time
+                //(it may make searching slow when using the Pokedex)
                 List<string> list = resource_uri.Split('/').ToList();
                 int id = -1;
                 id = int.Parse(list.FirstOrDefault<string>(x => int.TryParse(x, out id)));
                 return id;
-            }
-
-            set
-            {
-                national_id = value;
             }
         }
     }

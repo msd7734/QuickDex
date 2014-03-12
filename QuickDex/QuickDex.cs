@@ -27,6 +27,11 @@ namespace QuickDex
             return "QuickDex";
         }
 
+        public bool? IsLastSearchSuccess()
+        {
+            throw new NotImplementedException();
+        }
+
         public string GotoPokemonEntry(int dexNum, PokeGeneration gen)
         {
             throw new NotImplementedException();
@@ -36,5 +41,7 @@ namespace QuickDex
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

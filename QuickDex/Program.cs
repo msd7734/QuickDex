@@ -23,10 +23,9 @@ namespace QuickDex
         /// </summary>
         static void Main(string[] args)
         {
-            AllocConsole();
-
             Cache myCache;
             ApiPokedex myPokedex;
+            PokeManager myManager;
 
             //check for presence of cache, then validate it
             //TODO: Validate cache with PRAGMA integrity_check
@@ -49,24 +48,20 @@ namespace QuickDex
                 myCache.CachePokedex(myPokedex);
             }
 
-            Console.WriteLine(myPokedex);
-            Console.ReadLine();
+            myManager = new PokeManager(myPokedex);
 
-            FreeConsole();
-
-            /*
+            
             List<ISearchStrategy> searchStrats = new List<ISearchStrategy>()
             {
-                new QuickDex(myPokedex),
-                new BulbapediaReferrer(myPokedex),
-                new SerebiiReferrer(myPokedex)
+                new QuickDex(myManager),
+                new BulbapediaReferrer(myManager),
+                new SerebiiReferrer(myManager)
             };
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainWnd(searchStrats));
-             * */
-            
+
             //Code for testing through the command line.
 
             /*

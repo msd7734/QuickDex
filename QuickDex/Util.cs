@@ -7,11 +7,24 @@ namespace QuickDex
     {
         private Util() { }
 
+        /// <summary>
+        /// Formats an integer into a minimum length 3 string with front-padded 0's
+        /// </summary>
+        /// <param name="i">int to format</param>
+        /// <returns>String representation of i, padded with 0's if less than 3 digits</returns>
         public static string To3DigitStr(int i)
         {
-            return string.Format("{0,0:D3}", i);
+            if (i.ToString().Length > 2)
+                return i.ToString();
+            else
+                return string.Format("{0,0:D3}", i);
         }
 
+        /// <summary>
+        /// Formats an integer string to a minimum length of 3 with front-padded 0's
+        /// </summary>
+        /// <param name="str">String to format</param>
+        /// <returns>String front-padded with 0's if less than 3 characters</returns>
         public static string To3DigitStr(string str)
         {
             //Doing it this way to force only numeric strings

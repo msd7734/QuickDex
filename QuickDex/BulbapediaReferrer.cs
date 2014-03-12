@@ -24,6 +24,11 @@ namespace QuickDex
             return "Bulbapedia";
         }
 
+        public bool? IsLastSearchSuccess()
+        {
+            throw new NotImplementedException();
+        }
+
         public string GotoPokemonEntry(int dexNum, PokeGeneration gen)
         {
             //can only get pages on BP by pokemon name, so need to perform a lookup 
@@ -35,5 +40,7 @@ namespace QuickDex
             //pokemon name can be all lowercase or have first letter capitalized
             throw new NotImplementedException();
         }
+
+
     }
 }

@@ -20,7 +20,8 @@ namespace QuickDex
             };
         #endregion
 
-        private PokeManager manager;
+        PokeManager manager;
+        bool? lastSearchSuccess;
 
         /// <summary>
         /// Construct a SearchStrategy for serebii.com
@@ -29,6 +30,7 @@ namespace QuickDex
         public SerebiiReferrer(PokeManager manager)
         {
             this.manager = manager;
+            lastSearchSuccess = null;
         }
 
         public string GetName()
@@ -36,18 +38,49 @@ namespace QuickDex
             return "Serebii";
         }
 
+        public bool? IsLastSearchSuccess()
+        {
+            return lastSearchSuccess;
+        }
+
         public string GotoPokemonEntry(int dexNum, PokeGeneration gen)
         {
+            string pkmName = manager.GetNameById(dexNum);
             string paddedDexNum = Util.To3DigitStr(dexNum);
-            string url = "http://www.serebii.net/" + GEN_URL_MAP[gen] + "/" + paddedDexNum + ".shtml";
-            Process.Start(url);
-            return "Success";
+
+            if (pkmName != null)
+            {
+                string url = "http://www.serebii.net/" + GEN_URL_MAP[gen] + "/" + paddedDexNum + ".shtml";
+                Process.Start(url);
+                lastSearchSuccess = true;
+                return "Opening " + pkmName + "\'s entry on Serebii.";
+            }
+            else
+            {
+                lastSearchSuccess = false;
+                return "A Pokemon of ID #" + paddedDexNum + " was not found.";
+            }
+            
         }
 
         public string GotoPokemonEntry(string pokemon, PokeGeneration gen)
         {
             //Serebii's pages are based on National Dex #, so need to look up from given pokemon name
-            throw new NotImplementedException();
+            int? pkmId = manager.GetIdByName(pokemon);
+            
+            if (pkmId != null)
+            {
+                string paddedDexNum = Util.To3DigitStr((int)pkmId);
+                string url = "http://www.serebii.net/" + GEN_URL_MAP[gen] + "/" + paddedDexNum + ".shtml";
+                Process.Start(url);
+                lastSearchSuccess = true;
+                return "Opening " + pokemon + "\'s entry on Serebii.";
+            }
+            else
+            {
+                lastSearchSuccess = false;
+                return "A Pokemon with the name " + pokemon + " was not found.";
+            }
         }
     }
 }
