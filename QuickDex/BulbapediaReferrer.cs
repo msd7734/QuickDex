@@ -11,6 +11,9 @@ namespace QuickDex
         private PokeManager manager;
         private bool? lastSearchSuccess;
 
+        //TODO: Write a name aliases dictionary to map API Pokemon names to something
+        //that can be accepted by Bulbapedia. Ex: api-name: mr-mime, bp-name: mr. mime
+
         /// <summary>
         /// Construct a SearchStrategy for serebii.com
         /// </summary>
