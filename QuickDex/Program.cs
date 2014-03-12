@@ -23,6 +23,8 @@ namespace QuickDex
         /// </summary>
         static void Main(string[] args)
         {
+            AllocConsole();
+
             Cache myCache;
             ApiPokedex myPokedex;
 
@@ -30,10 +32,13 @@ namespace QuickDex
             //TODO: Validate cache with PRAGMA integrity_check
             //For more info, see: http://fmansoor.wordpress.com/2013/03/01/must-periodically-check-sqlite-db-integrity/
             //May also be prudent to compute hash on program exit and validte on next startup (as reg entry?)
+            //TODO: CacheLoader form that can wrap Cache methods and provide a dialog with a message and load bar
+            //Would give feedback to user when doing potentially slow cache operation
             if (Util.CacheExists())
             {
                 //read from cache to deserialize Pokedex (?)
                 myCache = Cache.GetExistingCache();
+                //should we read all of this into memory? may be able to get away with querying as needed
                 myPokedex = myCache.LoadPokedex();
             }
             else
@@ -44,6 +49,12 @@ namespace QuickDex
                 myCache.CachePokedex(myPokedex);
             }
 
+            Console.WriteLine(myPokedex);
+            Console.ReadLine();
+
+            FreeConsole();
+
+            /*
             List<ISearchStrategy> searchStrats = new List<ISearchStrategy>()
             {
                 new QuickDex(myPokedex),
@@ -54,6 +65,7 @@ namespace QuickDex
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainWnd(searchStrats));
+             * */
             
             //Code for testing through the command line.
 

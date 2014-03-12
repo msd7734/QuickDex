@@ -16,6 +16,15 @@ namespace QuickDex.Pokeapi
         public string name { get; set; }
         public Pokemon[] pokemon { get; set; }
         public string resource_uri { get; set; }
+
+        public override string ToString()
+        {
+            return name + " (Pokedex):" +
+                "\ncreated: " + created.ToString() +
+                "\nmodified: " + modified.ToString() +
+                "\nresource_uri: " + resource_uri + 
+                "\n# Pokemon: " + pokemon.Length.ToString();
+        }
     }
 
     public class Pokemon
@@ -30,6 +39,11 @@ namespace QuickDex.Pokeapi
                 int id = -1;
                 id = int.Parse(list.FirstOrDefault<string>(x => int.TryParse(x, out id)));
                 return id;
+            }
+
+            set
+            {
+                national_id = value;
             }
         }
     }

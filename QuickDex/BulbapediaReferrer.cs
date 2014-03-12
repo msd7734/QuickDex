@@ -8,15 +8,15 @@ namespace QuickDex
 
     class BulbapediaReferrer : ISearchStrategy
     {
-        private ApiPokedex pokedex;
+        private PokeManager manager;
 
         /// <summary>
         /// Construct a SearchStrategy for serebii.com
         /// </summary>
         /// <param name="dataCache">The cache of pokemon data to use in search operations</param>
-        public BulbapediaReferrer(ApiPokedex pokedex)
+        public BulbapediaReferrer(PokeManager manager)
         {
-            this.pokedex = pokedex;
+            this.manager = manager;
         }
 
         public string GetName()

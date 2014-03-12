@@ -20,7 +20,7 @@ namespace QuickDex
 
         private static readonly Color COLOR_SUCCESS = Color.Green;
         private static readonly Color COLOR_FAIL = Color.Red;
-        private static const Color COLOR_DEFAULT = Color.Black;
+        private static readonly Color COLOR_DEFAULT = Color.Black;
 
         //Used to 
         private List<ISearchStrategy> searchOptions;

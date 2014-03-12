@@ -41,9 +41,35 @@ namespace QuickDex
         private static readonly string insertPokemonQuery =
             "INSERT INTO Pokemon(national_id, name, resource_uri)" +
             "VALUES (@pkmId, @pkmName, @pkmResUri)";
+
+        private static readonly string selectPokedexQuery =
+            "SELECT * FROM Pokedex";
+
+        private static readonly string selectPokemonQuery =
+            "SELECT * FROM Pokemon";
         #endregion
 
-       
+        #region Cache Column Index Dictionaries
+        /// <summary>
+        /// These dictionaries are meant to be used with an SQLiteDataReader and its Get[Datatype](int) methods
+        /// </summary>
+        private static readonly Dictionary<string, int> PokedexCol = new Dictionary<string, int>()
+        {
+            {"name", 0},
+            {"created",1},
+            {"modified",2},
+            {"resource_uri",3}
+        };
+
+        private static readonly Dictionary<string, int> PokemonCol = new Dictionary<string, int>()
+        {
+            {"national_id",0},
+            {"name",1},
+            {"resource_uri",2}
+        };
+        #endregion
+
+
 
         protected Cache() { }
 
@@ -107,8 +133,8 @@ namespace QuickDex
                 {
                     insDexCmd.CommandText = insertPokedexQuery;
                     SQLiteParameter dexName = new SQLiteParameter("@dexName", System.Data.DbType.String);
-                    SQLiteParameter created = new SQLiteParameter("@dexCreated", System.Data.DbType.String);
-                    SQLiteParameter modified = new SQLiteParameter("@dexModified", System.Data.DbType.String);
+                    SQLiteParameter created = new SQLiteParameter("@dexCreated", System.Data.DbType.DateTime);
+                    SQLiteParameter modified = new SQLiteParameter("@dexModified", System.Data.DbType.DateTime);
                     SQLiteParameter resUri = new SQLiteParameter("@dexResUri", System.Data.DbType.String);
                     dexName.Value = pokedex.name;
                     created.Value = pokedex.created;
@@ -138,10 +164,8 @@ namespace QuickDex
 
                         insPkmCmd.Parameters.Clear();
                     }
-
                     trans.Commit();
                 }
-
                 con.Close();
             }
         }
@@ -153,7 +177,47 @@ namespace QuickDex
         public ApiPokedex LoadPokedex()
         {
             ApiPokedex pokedex = new ApiPokedex();
-            //not yet implemented
+            
+            using(SQLiteConnection con = new SQLiteConnection(CON_STR))
+            {
+                con.Open();
+                
+                using (SQLiteCommand selDex = new SQLiteCommand(selectPokedexQuery, con))
+                using (SQLiteCommand selPkm = new SQLiteCommand(selectPokemonQuery, con))
+                {
+                    SQLiteDataReader reader = selDex.ExecuteReader();
+
+                    while(reader.Read())
+                    {
+                        pokedex.name = reader.GetString(PokedexCol["name"]);
+                        pokedex.created = Convert.ToDateTime(
+                            reader.GetDateTime(PokedexCol["created"])
+                        );
+                        pokedex.modified = Convert.ToDateTime(
+                            reader.GetDateTime(PokedexCol["modified"])
+                        );
+                        pokedex.resource_uri = reader.GetString(PokedexCol["resource_uri"]);
+                    }
+
+                    reader = selPkm.ExecuteReader();
+                    List<Pokemon> pkm = new List<Pokemon>();
+
+                    while (reader.Read())
+                    {
+                        Pokemon p = new Pokemon();
+                        p.national_id = reader.GetInt32(PokemonCol["national_id"]);
+                        p.name = reader.GetString(PokemonCol["name"]);
+                        p.resource_uri = reader.GetString(PokemonCol["resource_uri"]);
+
+                        pkm.Add(p);
+                    }
+
+                    pokedex.pokemon = pkm.ToArray<Pokemon>();
+                }
+
+                con.Close();
+            }
+
             return pokedex;
         }
     }

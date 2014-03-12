@@ -11,15 +11,15 @@ namespace QuickDex
     /// </summary>
     public class QuickDex : ISearchStrategy
     {
-        private ApiPokedex pokedex;
+        private PokeManager manager;
 
         /// <summary>
         /// Construct a SearchStrategy for serebii.com
         /// </summary>
         /// <param name="dataCache">The cache of pokemon data to use in search operations</param>
-        public QuickDex(ApiPokedex pokedex)
+        public QuickDex(PokeManager manager)
         {
-            this.pokedex = pokedex;
+            this.manager = manager;
         }
 
         public string GetName()

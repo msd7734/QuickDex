@@ -20,15 +20,15 @@ namespace QuickDex
             };
         #endregion
 
-        private ApiPokedex pokedex;
+        private PokeManager manager;
 
         /// <summary>
         /// Construct a SearchStrategy for serebii.com
         /// </summary>
         /// <param name="dataCache">The cache of pokemon data to use in search operations</param>
-        public SerebiiReferrer(ApiPokedex pokedex)
+        public SerebiiReferrer(PokeManager manager)
         {
-            this.pokedex = pokedex;
+            this.manager = manager;
         }
 
         public string GetName()
