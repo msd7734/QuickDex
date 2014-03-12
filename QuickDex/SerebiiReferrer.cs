@@ -26,7 +26,7 @@ namespace QuickDex
         /// <summary>
         /// Construct a SearchStrategy for serebii.com
         /// </summary>
-        /// <param name="dataCache">The cache of pokemon data to use in search operations</param>
+        /// <param name="manager">The PokeManager to handle search operations</param>
         public SerebiiReferrer(PokeManager manager)
         {
             this.manager = manager;
