@@ -125,15 +125,17 @@ namespace QuickDex
         }
 
         /// <summary>
-        /// Build a query from a linked resource_uri string from API response JSON
-        /// resource_uri stings will be in the following format:
-        /// "/api/v1/[CALL]/[PARAM]/"
+        /// Get an API resource from a given uri.
         /// </summary>
-        /// <param name="resourceUri"></param>
-        /// <returns></returns>
-        public static HttpWebResponse QueryFromResourceUri(string resourceUri)
+        /// <typeparam name="T">The Pokeapi object expected</typeparam>
+        /// <param name="resourceUri">A resource uri in the format: "/api/v1/[CALL]/[PARAM]/"</param>
+        /// <returns>A Pokeapi object of type T</returns>
+        /// 
+
+        public static T QueryFromResourceUri<T>(string resourceUri)
         {
             string query = "";
+            T result;
 
             //maybe try to identify the type of call being made based on PARAM in the future
             //data returned may be useless/cryptic otherwise
@@ -141,6 +143,18 @@ namespace QuickDex
             {
                 string[] arr = resourceUri.Split('/');
                 query = Q_BASE + string.Join("/", arr[2], arr[3]);
+
+                HttpWebResponse wr = DoRequest(query);
+                string response = "";
+
+                using (StreamReader reader = new StreamReader(wr.GetResponseStream()))
+                {
+                    response = reader.ReadToEnd();
+                    result = JsonConvert.DeserializeObject<T>(response);
+                }
+
+                return result;
+                
             }
             catch (Exception e)
             {
