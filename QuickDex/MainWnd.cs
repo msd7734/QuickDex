@@ -33,6 +33,10 @@ namespace QuickDex
         //Used to serve search queries from different sources
         private List<ISearchStrategy> searchOptions;
 
+        //Determine if the form is hidden 
+        //Need this because Form.Visible prevents attempts to set it after init
+        private bool isVisible;
+
         /// <summary>
         /// Create the main Form for searching.
         /// </summary>
@@ -41,6 +45,7 @@ namespace QuickDex
         {
             searchOptions = searchStrats;
             isContextMenuClose = false;
+            isVisible = false;
 
             //Initialization of components; anything auto-generated stays in *.designer.cs
             InitializeComponent();
@@ -106,12 +111,23 @@ namespace QuickDex
         /// <summary>
         /// Show MainWnd if it's minimized, or activate if it's not the active application
         /// In addition, do any other operations depenent on these conditions
+        /// <param name="forceSearchBoxFocus">Force focus on the search box regardless of this method's internal logic</param>
         /// </summary>
-        private void ActivateOrShow()
+        private void ActivateOrShow(bool forceSearchBoxFocus = false)
         {
-            this.Show();
-            this.Activate();
-            searchBox.Focus();
+            if (isVisible)
+            {
+                this.Activate();
+            }
+            else
+            {
+                this.Show();
+                searchBox.Focus();
+                return;
+            }
+
+            if (forceSearchBoxFocus)
+                searchBox.Focus();
         }
         #endregion
 
@@ -125,8 +141,10 @@ namespace QuickDex
         private void MainWnd_TrayMenuShow(object sender, EventArgs e)
         {
             ActivateOrShow();
+            isVisible = true;
         }
 
+        //TODO: Upon searching, remember to disable the form controls until the search is done.
         private void searchBtn_Click(object sender, EventArgs e)
         {
             //Assume unintentional search if empty search string
@@ -175,6 +193,7 @@ namespace QuickDex
             if (e.CloseReason == CloseReason.UserClosing && !isContextMenuClose)
             {
                 this.Hide();
+                isVisible = false;
                 e.Cancel = true;
             }
             else return;
@@ -183,15 +202,17 @@ namespace QuickDex
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             ActivateOrShow();
+            isVisible = true;
         }
 
         private void MainWnd_Load(object sender, EventArgs e)
         {
-                this.Visible = false;
-                this.ShowInTaskbar = false;
+            this.Visible = false;
+            isVisible = false;
+            this.ShowInTaskbar = false;
         }
 
-        //TODO: Upon searching, remember to disable the form controls until the search is done.
+       
     }
 
         #endregion

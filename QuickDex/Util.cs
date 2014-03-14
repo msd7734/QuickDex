@@ -1,10 +1,19 @@
 ﻿using System;
 using System.IO;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace QuickDex
 {
     class Util
     {
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        private static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern int GetWindowThreadProcessId(IntPtr handle, out int processId);
+
         private Util() { }
 
         /// <summary>
@@ -34,6 +43,25 @@ namespace QuickDex
         public static bool CacheExists()
         {
             return (File.Exists(Cache.FileName));
+        }
+
+        /// <summary>
+        /// Returns true if the current application has focus, false otherwise
+        /// Code courtesy of StackOverflow: http://stackoverflow.com/a/7162873
+        /// </summary>
+        public static bool ApplicationIsActivated()
+        {
+            var activatedHandle = GetForegroundWindow();
+            if (activatedHandle == IntPtr.Zero)
+            {
+                return false;       // No window is currently activated
+            }
+
+            var procId = Process.GetCurrentProcess().Id;
+            int activeProcId;
+            GetWindowThreadProcessId(activatedHandle, out activeProcId);
+
+            return activeProcId == procId;
         }
     }
 }
