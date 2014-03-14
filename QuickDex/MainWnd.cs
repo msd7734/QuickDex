@@ -27,9 +27,10 @@ namespace QuickDex
         private ContextMenu trayMenu;
         #endregion
 
+        //Set to true if close event fired from TrayIcon context menu
         private bool isContextMenuClose;
 
-        //Used to 
+        //Used to serve search queries from different sources
         private List<ISearchStrategy> searchOptions;
 
         /// <summary>
