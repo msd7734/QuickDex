@@ -16,11 +16,18 @@ namespace QuickDex
     /// </summary>
     public partial class MainWnd : Form
     {
+        #region Constants
         private static readonly char ENTER_KEY = '\r';
-
         private static readonly Color COLOR_SUCCESS = Color.Green;
         private static readonly Color COLOR_FAIL = Color.Red;
         private static readonly Color COLOR_DEFAULT = Color.Black;
+        #endregion
+
+        #region Components
+        private ContextMenu trayMenu;
+        #endregion
+
+        private bool isContextMenuClose;
 
         //Used to 
         private List<ISearchStrategy> searchOptions;
@@ -32,8 +39,15 @@ namespace QuickDex
         public MainWnd(List<ISearchStrategy> searchStrats)
         {
             searchOptions = searchStrats;
+            isContextMenuClose = false;
 
+            //Initialization of components; anything auto-generated stays in *.designer.cs
             InitializeComponent();
+            trayMenu = new ContextMenu();
+            trayMenu.MenuItems.Add("Show", MainWnd_TrayMenuShow);
+            trayMenu.MenuItems.Add("Exit", MainWnd_TrayMenuClose);
+            notifyIcon.ContextMenu = trayMenu;
+
 
             //Place window on bottom right of screen
             Rectangle screen = Screen.PrimaryScreen.WorkingArea;
@@ -87,11 +101,37 @@ namespace QuickDex
             }
                 
         }
+
+        /// <summary>
+        /// Show MainWnd if it's minimized, or activate if it's not the active application
+        /// In addition, do any other operations depenent on these conditions
+        /// </summary>
+        private void ActivateOrShow()
+        {
+            this.Show();
+            this.Activate();
+            searchBox.Focus();
+        }
         #endregion
 
         #region Event Handlers
+        private void MainWnd_TrayMenuClose(object sender, EventArgs e)
+        {
+            isContextMenuClose = true;
+            this.Close();
+        }
+
+        private void MainWnd_TrayMenuShow(object sender, EventArgs e)
+        {
+            ActivateOrShow();
+        }
+
         private void searchBtn_Click(object sender, EventArgs e)
         {
+            //Assume unintentional search if empty search string
+            if (searchBox.Text == String.Empty)
+                return;
+
             int index = this.searchSrcSelect.SelectedIndex;
             ISearchStrategy strat = searchOptions[index];
 
@@ -125,7 +165,29 @@ namespace QuickDex
         //To do this, set MainWnd.KeyPreview = true
         private void MainWnd_KeyPress(object sender, KeyPressEventArgs e)
         {
-            
+
+        }
+
+        private void MainWnd_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+            if (e.CloseReason == CloseReason.UserClosing && !isContextMenuClose)
+            {
+                this.Hide();
+                e.Cancel = true;
+            }
+            else return;
+        }
+
+        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            ActivateOrShow();
+        }
+
+        private void MainWnd_Load(object sender, EventArgs e)
+        {
+                this.Visible = false;
+                this.ShowInTaskbar = false;
         }
 
         //TODO: Upon searching, remember to disable the form controls until the search is done.

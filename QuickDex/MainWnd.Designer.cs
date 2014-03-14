@@ -35,12 +35,12 @@
             this.searchBtn = new System.Windows.Forms.Button();
             this.searchBox = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.genSelect = new System.Windows.Forms.ComboBox();
+            this.generationLbl = new System.Windows.Forms.Label();
+            this.searchSourceLbl = new System.Windows.Forms.Label();
             this.searchSrcSelect = new System.Windows.Forms.ComboBox();
             this.msgDisplay = new System.Windows.Forms.RichTextBox();
             this.resultsLbl = new System.Windows.Forms.Label();
-            this.searchSourceLbl = new System.Windows.Forms.Label();
-            this.generationLbl = new System.Windows.Forms.Label();
-            this.genSelect = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -50,6 +50,7 @@
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
             this.notifyIcon.Text = "QuickDex";
             this.notifyIcon.Visible = true;
+            this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
             // 
             // groupBox1
             // 
@@ -95,6 +96,33 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Options";
             // 
+            // genSelect
+            // 
+            this.genSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.genSelect.FormattingEnabled = true;
+            this.genSelect.Location = new System.Drawing.Point(5, 77);
+            this.genSelect.Name = "genSelect";
+            this.genSelect.Size = new System.Drawing.Size(121, 21);
+            this.genSelect.TabIndex = 3;
+            // 
+            // generationLbl
+            // 
+            this.generationLbl.AutoSize = true;
+            this.generationLbl.Location = new System.Drawing.Point(7, 60);
+            this.generationLbl.Name = "generationLbl";
+            this.generationLbl.Size = new System.Drawing.Size(62, 13);
+            this.generationLbl.TabIndex = 2;
+            this.generationLbl.Text = "Generation:";
+            // 
+            // searchSourceLbl
+            // 
+            this.searchSourceLbl.AutoSize = true;
+            this.searchSourceLbl.Location = new System.Drawing.Point(5, 18);
+            this.searchSourceLbl.Name = "searchSourceLbl";
+            this.searchSourceLbl.Size = new System.Drawing.Size(81, 13);
+            this.searchSourceLbl.TabIndex = 1;
+            this.searchSourceLbl.Text = "Search Source:";
+            // 
             // searchSrcSelect
             // 
             this.searchSrcSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -128,33 +156,6 @@
             this.resultsLbl.TabIndex = 2;
             this.resultsLbl.Text = "Results";
             // 
-            // searchSourceLbl
-            // 
-            this.searchSourceLbl.AutoSize = true;
-            this.searchSourceLbl.Location = new System.Drawing.Point(5, 18);
-            this.searchSourceLbl.Name = "searchSourceLbl";
-            this.searchSourceLbl.Size = new System.Drawing.Size(81, 13);
-            this.searchSourceLbl.TabIndex = 1;
-            this.searchSourceLbl.Text = "Search Source:";
-            // 
-            // generationLbl
-            // 
-            this.generationLbl.AutoSize = true;
-            this.generationLbl.Location = new System.Drawing.Point(7, 60);
-            this.generationLbl.Name = "generationLbl";
-            this.generationLbl.Size = new System.Drawing.Size(62, 13);
-            this.generationLbl.TabIndex = 2;
-            this.generationLbl.Text = "Generation:";
-            // 
-            // genSelect
-            // 
-            this.genSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.genSelect.FormattingEnabled = true;
-            this.genSelect.Location = new System.Drawing.Point(5, 77);
-            this.genSelect.Name = "genSelect";
-            this.genSelect.Size = new System.Drawing.Size(121, 21);
-            this.genSelect.TabIndex = 3;
-            // 
             // MainWnd
             // 
             this.AcceptButton = this.searchBtn;
@@ -174,6 +175,8 @@
             this.Name = "MainWnd";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "QuickDex";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWnd_FormClosing);
+            this.Load += new System.EventHandler(this.MainWnd_Load);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.MainWnd_KeyPress);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
