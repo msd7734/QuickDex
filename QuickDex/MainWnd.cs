@@ -91,6 +91,19 @@ namespace QuickDex
             this.msgDisplay.SelectionLength = msg.Length;
             this.msgDisplay.SelectionColor = color;
         }
+
+        /// <summary>
+        /// Show the form using a universal key shortcut.
+        /// </summary>
+        public void ShortcutFormShow()
+        {
+            //BUG: Doesn't activate when called from here... 
+            //Unless being stepped through in the debugger.
+            //Timing issue? I don't see how it can be... It must be...
+            //A HEISENBUG. FUCK.
+            ActivateOrShow(true);
+            isVisible = true;
+        }
         #endregion
 
         #region Private Methods
@@ -105,7 +118,6 @@ namespace QuickDex
             {
                 return COLOR_DEFAULT;
             }
-                
         }
 
         /// <summary>

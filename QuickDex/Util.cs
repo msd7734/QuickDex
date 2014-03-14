@@ -14,6 +14,8 @@ namespace QuickDex
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern int GetWindowThreadProcessId(IntPtr handle, out int processId);
 
+        public delegate void VoidDelegate();
+        
         private Util() { }
 
         /// <summary>
