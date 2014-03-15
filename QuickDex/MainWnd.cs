@@ -223,7 +223,7 @@ namespace QuickDex
             this.Visible = false;
             isVisible = false;
             this.ShowInTaskbar = false;
-            notifyIcon.ShowBalloonTip(1000, "QuickDex", "QuickDex is now running! Use the Ctrl+q shortcut to perform a quick search.", ToolTipIcon.Info);
+            notifyIcon.ShowBalloonTip(1000, "QuickDex", "QuickDex is now running! Use the Win+Q shortcut to perform a quick search.", ToolTipIcon.Info);
         }
 
        
