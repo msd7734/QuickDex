@@ -52,4 +52,4 @@ A: True, you could do that. But you have to open up a browser and navigate there
 
 Download
 ========
-I'm currently working on a release build/installer and I'll update the readme with a download link when it's done. For now, you'll have to build the source yourself in Visual Studio.
+You can build the source inside Visual Studio, or you can download the .zip file of the beta 1.0 release here: http://www.mediafire.com/download/5k65vc88b4dh78i/QuickDex_b1.0.zip
