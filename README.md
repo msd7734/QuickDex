@@ -42,7 +42,7 @@ A: That's a very specific question, but I'm glad you asked! Nidoran(f) and Nidor
 
 Q: Is this program safe? Will it give me a virus/hack my computer/steal my bank account number/release my shiny Celebi/etc?
 
-A: Nope! It's completely safe. But don't take my word for it, Github has all the source code for your perusal.
+A: It won't do any of that! It's completely safe. But don't take my word for it, Github has all the source code for your perusal.
 
 
 Q: This is useless. Why wouldn't someone just go to Bulbapedia or Serebii or somewhere else and search on the site directly?
