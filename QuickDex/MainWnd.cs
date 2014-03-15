@@ -97,10 +97,10 @@ namespace QuickDex
         /// </summary>
         public void ShortcutFormShow()
         {
-            //BUG: Doesn't activate when called from here... 
-            //Unless being stepped through in the debugger.
-            //Timing issue? I don't see how it can be... It must be...
-            //A HEISENBUG. FUCK.
+            //There is some mysterious timing issue here that makes the form not activate when isVisible = true
+            //20ms is about the minimum to get fix it consistently, 10ms only works sometimes (wtf???)
+            //Maybe one day I'll find out the real reason for this. Until now... Sleep(20) is the solution.
+            System.Threading.Thread.Sleep(20);
             ActivateOrShow(true);
             isVisible = true;
         }
@@ -222,6 +222,7 @@ namespace QuickDex
             this.Visible = false;
             isVisible = false;
             this.ShowInTaskbar = false;
+            notifyIcon.ShowBalloonTip(1000, "QuickDex", "QuickDex is now running! Use the Ctrl+q shortcut to perform a quick search.", ToolTipIcon.Info);
         }
 
        
