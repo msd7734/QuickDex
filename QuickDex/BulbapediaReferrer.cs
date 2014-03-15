@@ -13,7 +13,7 @@ namespace QuickDex
 
 
         #region Pokemon name aliases
-        //For mapping abnormal names to counterparts used by BP URL
+        //For mapping abnormal names to counterparts used by Bulbapedia URLs
         private static readonly Dictionary<string, string> pokeNameAlias
             = new Dictionary<string, string>()
         {
@@ -88,13 +88,14 @@ namespace QuickDex
             //pokemon name can be all lowercase or have first letter capitalized
             int? pkmId = manager.GetIdByName(pokemon);
 
-            
-
             if (pkmId != null)
             {
+                //map internal alias to external API name
+                if (ApiAliases.AliasesToApiPokeName.ContainsKey(pokemon))
+                    pokemon = ApiAliases.AliasesToApiPokeName[pokemon];
+
                 //alias name to one Bulbapedia expects if there's an alias rule for it
-                List<string> apiNames = new List<string>(pokeNameAlias.Keys);
-                if (apiNames.Contains(pokemon))
+                if (pokeNameAlias.ContainsKey(pokemon))
                     pokemon = pokeNameAlias[pokemon];
 
                 string paddedDexNum = Util.To3DigitStr((int)pkmId);
