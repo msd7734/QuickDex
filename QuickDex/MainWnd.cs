@@ -30,6 +30,9 @@ namespace QuickDex
         //Set to true if close event fired from TrayIcon context menu
         private bool isContextMenuClose;
 
+        //Set to true if close event fired by pressing escape and confirming quit
+        private bool isEscapeBtnClose;
+
         //Used to serve search queries from different sources
         private List<ISearchStrategy> searchOptions;
 
@@ -45,6 +48,7 @@ namespace QuickDex
         {
             searchOptions = searchStrats;
             isContextMenuClose = false;
+            isEscapeBtnClose = false;
             isVisible = false;
 
             //Initialization of components; anything auto-generated stays in *.designer.cs
@@ -197,13 +201,23 @@ namespace QuickDex
         //To do this, set MainWnd.KeyPreview = true
         private void MainWnd_KeyPress(object sender, KeyPressEventArgs e)
         {
-
+            if ((Keys)e.KeyChar == Keys.Escape)
+            {
+                DialogResult res = MessageBox.Show(this, "Close the QuickDex?", "Confirm", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (res == DialogResult.OK)
+                {
+                    isEscapeBtnClose = true;
+                    this.Close();
+                }
+            }
         }
 
         private void MainWnd_FormClosing(object sender, FormClosingEventArgs e)
         {
 
-            if (e.CloseReason == CloseReason.UserClosing && !isContextMenuClose)
+            if (e.CloseReason == CloseReason.UserClosing
+                && !isContextMenuClose
+                && !isEscapeBtnClose)
             {
                 this.Hide();
                 isVisible = false;
