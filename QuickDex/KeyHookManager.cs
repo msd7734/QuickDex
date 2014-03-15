@@ -33,16 +33,22 @@ namespace QuickDex
 
         //ID for: Hook procedure that monitors low-level keyboard input events. 
         private const int WH_KEYBOARD_LL = 13;
-        //ID for: 
+        //ID for: Keydown event
         private const int WM_KEYDOWN = 0x0100;
+        //ID for: Keyup event
+        private const int WM_KEYUP = 0x0101;
         private LowLevelKeyboardProc _proc; 
         private IntPtr _hookID = IntPtr.Zero;
+        private bool mainKeyIsDown;
+        private bool winKeyIsDown;
 
         private Util.VoidDelegate _externAction;
 
         public KeyHookManager(Util.VoidDelegate externalCallback)
         {
             //AllocConsole();
+            mainKeyIsDown = false;
+            winKeyIsDown = false;
             _proc = HookCallback;
             _hookID = SetHook(_proc);
             _externAction = externalCallback;
@@ -65,17 +71,47 @@ namespace QuickDex
         private IntPtr HookCallback(
             int nCode, IntPtr wParam, IntPtr lParam)
         {
-            if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
+            //Less than 0 is invalid and must be passed through.
+            if (nCode >= 0)
             {
-                int vkCode = Marshal.ReadInt32(lParam);
-                if ((Keys)vkCode == Keys.Q && Keys.Control == Control.ModifierKeys)
+                if (wParam == (IntPtr)WM_KEYDOWN)
                 {
-                    _externAction();
-                    return IntPtr.Zero;
+                    int vkCode = Marshal.ReadInt32(lParam);
+
+                    if ((Keys)vkCode == Keys.LWin)
+                        winKeyIsDown = true;
+
+                    if ((Keys)vkCode == Keys.Q)
+                    {
+                        mainKeyIsDown = true;
+
+                        if (winKeyIsDown)
+                        {
+                            _externAction();
+                            //stop propagation of key event
+                            return (IntPtr)1;
+                        }
+                    }
                 }
-                //Console.WriteLine((Keys)vkCode);
+
+                else if (wParam == (IntPtr)WM_KEYUP)
+                {
+                    int vkCode = Marshal.ReadInt32(lParam);
+
+                    if ((Keys)vkCode == Keys.LWin)
+                    {
+                        winKeyIsDown = false;
+                        //Not the most ideal behavior, but stops from accidentally opening start menu
+                        if (mainKeyIsDown)
+                        {
+                            return (IntPtr)1;
+                        }
+                    }
+                    else if ((Keys)vkCode == Keys.Q)
+                        mainKeyIsDown = false;
+                }
             }
-            
+
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
         }
 
