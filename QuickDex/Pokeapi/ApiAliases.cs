@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace QuickDex.Pokeapi
 {
+    /// <summary>
+    /// Quick summary of the what/why for aliases in the QuickDex:
+    ///  - Pokeapi has its own special names for Pkm that have different forms or special characters in their name
+    ///  - An Alias is effectively a string that can be searched for in the QuickDex and will be treated as a given
+    ///    API equivalent name.
+    /// </summary>
     public struct ApiAliases
     {
         /// <summary>
