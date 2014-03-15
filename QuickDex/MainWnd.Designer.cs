@@ -70,7 +70,8 @@
             this.searchBtn.Location = new System.Drawing.Point(305, 19);
             this.searchBtn.Name = "searchBtn";
             this.searchBtn.Size = new System.Drawing.Size(97, 20);
-            this.searchBtn.TabIndex = 1;
+            this.searchBtn.TabIndex = 3;
+            this.searchBtn.TabStop = false;
             this.searchBtn.Text = "Search";
             this.searchBtn.UseVisualStyleBackColor = true;
             this.searchBtn.Click += new System.EventHandler(this.searchBtn_Click);
@@ -103,12 +104,12 @@
             this.genSelect.Location = new System.Drawing.Point(5, 77);
             this.genSelect.Name = "genSelect";
             this.genSelect.Size = new System.Drawing.Size(121, 21);
-            this.genSelect.TabIndex = 3;
+            this.genSelect.TabIndex = 2;
             // 
             // generationLbl
             // 
             this.generationLbl.AutoSize = true;
-            this.generationLbl.Location = new System.Drawing.Point(7, 60);
+            this.generationLbl.Location = new System.Drawing.Point(6, 63);
             this.generationLbl.Name = "generationLbl";
             this.generationLbl.Size = new System.Drawing.Size(62, 13);
             this.generationLbl.TabIndex = 2;
@@ -130,7 +131,7 @@
             this.searchSrcSelect.Location = new System.Drawing.Point(6, 32);
             this.searchSrcSelect.Name = "searchSrcSelect";
             this.searchSrcSelect.Size = new System.Drawing.Size(121, 21);
-            this.searchSrcSelect.TabIndex = 0;
+            this.searchSrcSelect.TabIndex = 1;
             // 
             // msgDisplay
             // 
@@ -142,7 +143,7 @@
             this.msgDisplay.ReadOnly = true;
             this.msgDisplay.ShortcutsEnabled = false;
             this.msgDisplay.Size = new System.Drawing.Size(256, 120);
-            this.msgDisplay.TabIndex = 1;
+            this.msgDisplay.TabIndex = 99;
             this.msgDisplay.TabStop = false;
             this.msgDisplay.Text = "";
             this.msgDisplay.WordWrap = false;
