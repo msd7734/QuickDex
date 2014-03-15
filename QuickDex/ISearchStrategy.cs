@@ -30,14 +30,6 @@ namespace QuickDex
         /// <returns>A success/failure/result message.</returns>
         string GotoPokemonEntry(int dexNum, PokeGeneration gen);
 
-        //TODO: Because certain sites use different url schemes, sometimes we want a pokedex # and sometimes a name
-        //  We should overload GotoPokemonEntry to take a string as well as a dex #
-        //  The Pokedex class will have the responsibility of looking up pokemon information (and thus translating here)
-        //  It was intended only to be used as the backend for the UI's functions and for efficiency reasons (maintaining cache)
-        //  So we have a couple solutions to let our ISiteReferrers use it:
-        //  - Make Pokedex a singleton: Good IF it will be responsible for loading the cache and doing complex lookup
-        //  - Pass an instantiated Pokedex as ref to the constructors in subclasses of ISiteReferrer: GOOD to avoid singleton
-
         /// <summary>
         /// Perform a Pokemon search and return a results string to display.
         /// This may include simply a failure or success message, or a formatted string
