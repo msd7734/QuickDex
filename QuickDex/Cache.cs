@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Data.Common;
+using System.Threading;
+using System.Security.Cryptography;
 using System.Linq;
 using System.Data.SQLite;
 using System.Data.SQLite.Linq;
+using System.Windows.Forms;
 using QuickDex.Pokeapi;
 
 namespace QuickDex
@@ -12,13 +16,13 @@ namespace QuickDex
     /// SQLite implementation of the cache. This is absolutely essential
     /// to prevent the need for many calls to Pokeapi (locked at 300 per
     /// resource per day). 
-    /// IDEA: Make this disposable and save the MD5 on dispose to maintain cache integrity
+    /// On disapose, save the MD5 on dispose to maintain cache integrity
     /// </summary>
-    public class Cache
+    public class Cache : IDisposable
     {
         public static readonly string FileName = ".cache";
 
-        private static readonly string CON_STR = "Data Source=" + FileName + ";Version=3";
+        private static readonly string CON_STR = "Data Source=" + FileName + ";Version=3;MultipleActiveResultSets=False";
 
         #region Stored queries
         private static readonly string initQuery =
@@ -69,8 +73,6 @@ namespace QuickDex
         };
         #endregion
 
-
-
         protected Cache() { }
 
         /// <summary>
@@ -112,6 +114,28 @@ namespace QuickDex
                 return new Cache();
             else
                 return null;
+        }
+
+        public string ComputeMD5String()
+        {
+            //Garbage collect to fix resource leak
+            ForceDisposeSQLite();
+
+            MD5 md5 = MD5.Create();
+            try
+            {
+                using (var stream = File.OpenRead(FileName))
+                {
+                    var hash = md5.ComputeHash(stream);
+                    return "qkdx:" + BitConverter.ToString(hash).Replace("-", "");
+                }
+            }
+            catch (IOException ioe)
+            {
+                MessageBox.Show(ioe.Message, "Exception occurred while saving cache file.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return Properties.Settings.Default.Cache;
+            }
+            
         }
 
         /// <summary>
@@ -222,5 +246,27 @@ namespace QuickDex
 
             return pokedex;
         }
+
+        public void Dispose()
+        {
+            //Save MD5 to validate cache on next application run
+            string md5 = ComputeMD5String();
+            Properties.Settings.Default.Cache = md5;
+            Properties.Settings.Default.Save();
+        }
+
+        #region Private methods
+        /// <summary>
+        /// Fix SQLite resource leak before opening stream on Cache file.
+        /// There are better solutions but this is the easiest for now.
+        /// See: http://stackoverflow.com/questions/12532729/
+        /// </summary>
+        private void ForceDisposeSQLite()
+        {
+            GC.Collect();
+            //Give the 'ol GC a few ms to catch up
+            Thread.Sleep(50);
+        }
+        #endregion
     }
 }

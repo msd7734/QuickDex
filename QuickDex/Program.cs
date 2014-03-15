@@ -24,7 +24,6 @@ namespace QuickDex
         [STAThread]
         static void Main(string[] args)
         {
-
             Cache myCache;
             ApiPokedex myPokedex;
             PokeManager myManager;
@@ -33,8 +32,16 @@ namespace QuickDex
             {
                 //read from cache to deserialize Pokedex
                 myCache = Cache.GetExistingCache();
-                //should we read all of this into memory? may be able to get away with querying as needed
-                myPokedex = myCache.LoadPokedex();
+
+                if ((string)Properties.Settings.Default["Cache"] != myCache.ComputeMD5String())
+                {
+                    MessageBox.Show("Your cache seems to be invalid. A new one will now be built.", "Corrupted cache file");
+                    myCache = Cache.InitializeNewCache(true);
+                    myPokedex = PokeQuery.GetPokedex();
+                    myCache.CachePokedex(myPokedex);
+                }
+                else
+                    myPokedex = myCache.LoadPokedex();
             }
             else
             {
@@ -45,8 +52,7 @@ namespace QuickDex
             }
 
             myManager = new PokeManager(myPokedex);
-
-
+                        
             List<ISearchStrategy> searchStrats = new List<ISearchStrategy>()
             {
                 //new QuickDex(myManager),
@@ -59,8 +65,10 @@ namespace QuickDex
 
             MainWnd wnd = new MainWnd(searchStrats);
 
+            using (Cache c = myCache)
             using (KeyHookManager hookManager = new KeyHookManager(wnd.ShortcutFormShow))
             {
+                
                 Application.Run(wnd);
             }
 
