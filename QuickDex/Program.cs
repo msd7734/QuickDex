@@ -54,7 +54,7 @@ namespace QuickDex
                 new SerebiiReferrer(myManager)
             };
 
-            //Application.EnableVisualStyles();
+            Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             MainWnd wnd = new MainWnd(searchStrats);
