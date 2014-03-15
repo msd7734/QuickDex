@@ -157,6 +157,7 @@ namespace QuickDex
         }
 
         //TODO: Upon searching, remember to disable the form controls until the search is done.
+        // - Caveat, only bother if search time becomes an issue
         private void searchBtn_Click(object sender, EventArgs e)
         {
             //Assume unintentional search if empty search string
