@@ -24,45 +24,46 @@ namespace QuickDex
         [STAThread]
         static void Main(string[] args)
         {
-            using (KeyHookManager hookManager = new KeyHookManager(() => { return; } ))
+
+            Cache myCache;
+            ApiPokedex myPokedex;
+            PokeManager myManager;
+
+            if (Util.CacheExists())
             {
-                Cache myCache;
-                ApiPokedex myPokedex;
-                PokeManager myManager;
-
-                if (Util.CacheExists())
-                {
-                    //read from cache to deserialize Pokedex
-                    myCache = Cache.GetExistingCache();
-                    //should we read all of this into memory? may be able to get away with querying as needed
-                    myPokedex = myCache.LoadPokedex();
-                }
-                else
-                {
-                    //create new cache and persist Pokedex (incl. Pokemon)
-                    myCache = Cache.InitializeNewCache(true);
-                    myPokedex = PokeQuery.GetPokedex();
-                    myCache.CachePokedex(myPokedex);
-                }
-
-                myManager = new PokeManager(myPokedex);
-
-
-                List<ISearchStrategy> searchStrats = new List<ISearchStrategy>()
+                //read from cache to deserialize Pokedex
+                myCache = Cache.GetExistingCache();
+                //should we read all of this into memory? may be able to get away with querying as needed
+                myPokedex = myCache.LoadPokedex();
+            }
+            else
             {
-                new QuickDex(myManager),
-                new BulbapediaReferrer(myManager),
-                new SerebiiReferrer(myManager)
-            };
+                //create new cache and persist Pokedex (incl. Pokemon)
+                myCache = Cache.InitializeNewCache(true);
+                myPokedex = PokeQuery.GetPokedex();
+                myCache.CachePokedex(myPokedex);
+            }
 
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
+            myManager = new PokeManager(myPokedex);
 
-                MainWnd wnd = new MainWnd(searchStrats);
-                KeyHookManager hook = new KeyHookManager(wnd.ShortcutFormShow);
 
+            List<ISearchStrategy> searchStrats = new List<ISearchStrategy>()
+                {
+                    new QuickDex(myManager),
+                    new BulbapediaReferrer(myManager),
+                    new SerebiiReferrer(myManager)
+                };
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            MainWnd wnd = new MainWnd(searchStrats);
+
+            using (KeyHookManager hookManager = new KeyHookManager(wnd.ShortcutFormShow))
+            {
                 Application.Run(wnd);
             }
+
             /*
             Cache myCache;
             ApiPokedex myPokedex;
