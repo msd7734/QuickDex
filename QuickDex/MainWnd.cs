@@ -131,6 +131,10 @@ namespace QuickDex
         /// </summary>
         private void ActivateOrShow(bool forceSearchBoxFocus = false)
         {
+            //Forces the BalloonTip to hide if it's still there
+            notifyIcon.Visible = false;
+            notifyIcon.Visible = true;
+
             if (isVisible)
             {
                 this.Activate();
