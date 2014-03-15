@@ -38,6 +38,8 @@ namespace QuickDex
                     MessageBox.Show("Your cache seems to be invalid. A new one will now be built.", "Corrupted cache file");
                     myCache = Cache.InitializeNewCache(true);
                     myPokedex = PokeQuery.GetPokedex();
+                    if (myPokedex == null)
+                        Application.Exit();
                     myCache.CachePokedex(myPokedex);
                 }
                 else
@@ -48,8 +50,12 @@ namespace QuickDex
                 //create new cache and persist Pokedex (incl. Pokemon)
                 myCache = Cache.InitializeNewCache(true);
                 myPokedex = PokeQuery.GetPokedex();
+                if (myPokedex == null)
+                    Application.Exit();
                 myCache.CachePokedex(myPokedex);
             }
+
+            
 
             myManager = new PokeManager(myPokedex);
                         

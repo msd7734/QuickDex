@@ -2,6 +2,7 @@
 using System.Net;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms;
 using Newtonsoft.Json;
 using QuickDex.Pokeapi;
 
@@ -48,6 +49,10 @@ namespace QuickDex
                 //Getting here simply means that DoRequest failed with an WebException.
                 //For now, DoRequest handles its own failure but we might want to do something
                 //here in the future other than just pass through to inform our caller.
+                MessageBox.Show("Failed to get a response from Pokeapi. Make sure you have an internet connection and try again.",
+                    "Pokeapi request failed",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                pokedex = null;
             }
 
             return pokedex;
@@ -107,6 +112,10 @@ namespace QuickDex
                 //Getting here simply means that DoRequest failed with an WebException.
                 //For now, DoRequest handles its own failure but we might want to do something
                 //here in the future other than just pass through to inform our caller.
+                MessageBox.Show("Failed to get a response from Pokeapi. Make sure you have an internet connection and try again.",
+                    "Pokeapi request failed",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                deserializedPoke = null;
             }
 
             return deserializedPoke;
