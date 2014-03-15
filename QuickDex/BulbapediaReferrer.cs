@@ -11,8 +11,32 @@ namespace QuickDex
         private PokeManager manager;
         private bool? lastSearchSuccess;
 
-        //TODO: Write a name aliases dictionary to map API Pokemon names to something
-        //that can be accepted by Bulbapedia. Ex: api-name: mr-mime, bp-name: mr. mime
+
+        #region Pokemon name aliases
+        //For mapping abnormal names to counterparts used by BP URL
+        private static readonly Dictionary<string, string> pokeNameAlias
+            = new Dictionary<string, string>()
+        {
+            { "nidoran-f", "Nidoran♀" },
+            { "nidoran-m", "Nidoran♂" },
+            { "mr-mime", "Mr. Mime" },
+            { "deoxys-normal", "Deoxys" },
+            { "wormadam-plant", "Wormadam" },
+            { "mime-jr", "Mime Jr." },
+            { "giratina-altered", "Giratina" },
+            { "shaymin-land", "Shaymin" },
+            { "basculin-red-striped", "Basculin" },
+            { "darmanitan-standard", "Darmanitan" },
+            { "tornadus-incarnate", "Tornadus" },
+            { "thundurus-incarnate", "Thundurus" },
+            { "landorus-incarnate", "Landorus" },
+            { "keldeo-incarnate", "Keldeo" },
+            { "meloetta-aria", "Meloetta" },
+            { "meowstic-male", "Meowstic" },
+            { "pumpkaboo-average", "Pumpkaboo" },
+            { "gourgeist-average", "Gourgeist" }
+        };
+        #endregion
 
         /// <summary>
         /// Construct a SearchStrategy for serebii.com
@@ -42,6 +66,11 @@ namespace QuickDex
 
             if (pkmName != null)
             {
+                //alias name to one Bulbapedia expects if there's an alias rule for it
+                List<string> apiNames = new List<string>(pokeNameAlias.Keys);
+                if (apiNames.Contains(pkmName))
+                    pkmName = pokeNameAlias[pkmName];
+
                 string url = "http://bulbapedia.bulbagarden.net/wiki/" + pkmName.ToLower();
                 Process.Start(url);
                 lastSearchSuccess = true;
@@ -59,8 +88,15 @@ namespace QuickDex
             //pokemon name can be all lowercase or have first letter capitalized
             int? pkmId = manager.GetIdByName(pokemon);
 
+            
+
             if (pkmId != null)
             {
+                //alias name to one Bulbapedia expects if there's an alias rule for it
+                List<string> apiNames = new List<string>(pokeNameAlias.Keys);
+                if (apiNames.Contains(pokemon))
+                    pokemon = pokeNameAlias[pokemon];
+
                 string paddedDexNum = Util.To3DigitStr((int)pkmId);
                 string url = "http://bulbapedia.bulbagarden.net/wiki/" + pokemon.ToLower();
                 Process.Start(url);

@@ -13,6 +13,8 @@ namespace QuickDex
 
         #region Pokemon Name Aliases
         //Valid pokemon name searches that map to oddly named pokemon data from the API
+        //This can also be useful for pokemon with special characters in their names, even if
+        //they don't have an incorrect name in the API
         private static readonly Dictionary<string, List<string>> pokeNameAliases
             = new Dictionary<string, List<string>>()
         {
@@ -27,7 +29,7 @@ namespace QuickDex
             { "shaymin-land", new List<string>() { "shaymin" }},
             { "basculin-red-striped", new List<string>() { "basculin" }},
             { "darmanitan-standard", new List<string>() { "darmanitan" }},
-            { "tornadus-standard", new List<string>() { "tornadus" }},
+            { "tornadus-incarnate", new List<string>() { "tornadus" }},
             { "thundurus-incarnate", new List<string>() { "thundurus" }},
             { "landorus-incarnate", new List<string>() { "landorus" }},
             { "keldeo-incarnate", new List<string>() { "keldeo", }},
@@ -72,7 +74,7 @@ namespace QuickDex
         /// <summary>
         /// Return a National Dex Pokemon id based on an English name
         /// </summary>
-        /// <param name="pokemonName"></param>
+        /// <param name="pokemonName">Pokemon name to search</param>
         /// <returns>A valid int id if pokemon name is found, null otherwise.</returns>
         public int? GetIdByName(string pokemonName)
         {
