@@ -48,13 +48,13 @@ namespace QuickDex
 
 
             List<ISearchStrategy> searchStrats = new List<ISearchStrategy>()
-                {
-                    new QuickDex(myManager),
-                    new BulbapediaReferrer(myManager),
-                    new SerebiiReferrer(myManager)
-                };
+            {
+                //new QuickDex(myManager),
+                new BulbapediaReferrer(myManager),
+                new SerebiiReferrer(myManager)
+            };
 
-            Application.EnableVisualStyles();
+            //Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             MainWnd wnd = new MainWnd(searchStrats);

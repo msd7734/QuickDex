@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using WindowsInput;
+using WindowsInput.Native;
 
 namespace QuickDex
 {
@@ -93,7 +95,7 @@ namespace QuickDex
                         }
                     }
                 }
-
+                    
                 else if (wParam == (IntPtr)WM_KEYUP)
                 {
                     int vkCode = Marshal.ReadInt32(lParam);
@@ -101,9 +103,14 @@ namespace QuickDex
                     if ((Keys)vkCode == Keys.LWin)
                     {
                         winKeyIsDown = false;
-                        //Not the most ideal behavior, but stops from accidentally opening start menu
+
                         if (mainKeyIsDown)
                         {
+                            //need to do this to release windows key without opening start menu
+                            InputSimulator sim = new InputSimulator();
+                            sim.Keyboard.KeyDown(VirtualKeyCode.CONTROL);
+                            sim.Keyboard.KeyUp(VirtualKeyCode.LWIN);
+                            sim.Keyboard.KeyUp(VirtualKeyCode.CONTROL);
                             return (IntPtr)1;
                         }
                     }
