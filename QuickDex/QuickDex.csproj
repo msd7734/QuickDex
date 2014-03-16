@@ -101,6 +101,7 @@
       <DependentUpon>MainWnd.cs</DependentUpon>
     </Compile>
     <Compile Include="ISearchStrategy.cs" />
+    <Compile Include="PokemonDbReferrer.cs" />
     <Compile Include="QuickDex.cs" />
     <Compile Include="PokeGeneration.cs" />
     <Compile Include="PokeQuery.cs" />

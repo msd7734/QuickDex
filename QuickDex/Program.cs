@@ -63,7 +63,8 @@ namespace QuickDex
             {
                 //new QuickDex(myManager),
                 new BulbapediaReferrer(myManager),
-                new SerebiiReferrer(myManager)
+                new SerebiiReferrer(myManager),
+                new PokemonDbReferrer(myManager)
             };
 
             Application.EnableVisualStyles();
