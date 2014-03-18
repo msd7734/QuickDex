@@ -7,6 +7,7 @@ namespace QuickDex
 {
     class PokemonDbReferrer : ISearchStrategy
     {
+        #region Pokemon Name Aliases
         //For mapping abnormal names to counterparts used by PokemonDB URLs
         private static readonly Dictionary<string, string> pokeNameAlias
             = new Dictionary<string, string>()
@@ -26,6 +27,7 @@ namespace QuickDex
             { "pumpkaboo-average", "Pumpkaboo" },
             { "gourgeist-average", "Gourgeist" }
         };
+        #endregion
 
         PokeManager manager;
         bool? lastSearchSuccess;

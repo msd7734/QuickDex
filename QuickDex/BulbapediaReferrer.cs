@@ -11,7 +11,6 @@ namespace QuickDex
         private PokeManager manager;
         private bool? lastSearchSuccess;
 
-
         #region Pokemon name aliases
         //For mapping abnormal names to counterparts used by Bulbapedia URLs
         private static readonly Dictionary<string, string> pokeNameAlias
