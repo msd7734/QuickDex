@@ -7,8 +7,25 @@ namespace QuickDex
 {
     class PokemonDbReferrer : ISearchStrategy
     {
-        //TODO: Add pokeNameAlias dictionary to map special names. Pkm with spaces/special chars
-        //in their names use the API name, but alternate forms do not.
+        //For mapping abnormal names to counterparts used by PokemonDB URLs
+        private static readonly Dictionary<string, string> pokeNameAlias
+            = new Dictionary<string, string>()
+        {
+            { "deoxys-normal", "Deoxys" },
+            { "wormadam-plant", "Wormadam" },
+            { "giratina-altered", "Giratina" },
+            { "shaymin-land", "Shaymin" },
+            { "basculin-red-striped", "Basculin" },
+            { "darmanitan-standard", "Darmanitan" },
+            { "tornadus-incarnate", "Tornadus" },
+            { "thundurus-incarnate", "Thundurus" },
+            { "landorus-incarnate", "Landorus" },
+            { "keldeo-incarnate", "Keldeo" },
+            { "meloetta-aria", "Meloetta" },
+            { "meowstic-male", "Meowstic" },
+            { "pumpkaboo-average", "Pumpkaboo" },
+            { "gourgeist-average", "Gourgeist" }
+        };
 
         PokeManager manager;
         bool? lastSearchSuccess;
@@ -51,20 +68,35 @@ namespace QuickDex
         public string GotoPokemonEntry(string pokemon, PokeGeneration gen)
         {
             //PokemonDB seems to be backed by the Pokeapi, so it will use all the API pkm names
+            //Exception: Pokemon with alternate forms (Basculin, Deoxys, etc.) use different names
            
             string lower = pokemon.ToLower();
             string apiName;
 
+            //Get API-defined name if exists
             if (ApiAliases.AliasesToApiPokeName.ContainsKey(lower))
                 apiName = ApiAliases.AliasesToApiPokeName[lower];
             else
                 apiName = pokemon;
 
-            int? dexNum = manager.GetIdByName(pokemon);
+            int? dexNum = manager.GetIdByName(apiName);
+
+            
 
             if (dexNum != null)
             {
-                string url = "http://pokemondb.net/pokedex/" + apiName;
+                string url = "http://pokemondb.net/pokedex/";
+                //Set actual name to alias of API name so it works with PokemonDB
+                if (pokeNameAlias.ContainsKey(apiName))
+                {
+                    pokemon = pokeNameAlias[apiName];
+                    url += pokemon;
+                }
+                else
+                {
+                    url += apiName;
+                }
+
                 Process.Start(url);
                 lastSearchSuccess = true;
                 return "Opening " + pokemon + "\'s entry on PokemonDB.";
