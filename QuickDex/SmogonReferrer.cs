@@ -65,7 +65,33 @@ namespace QuickDex
 
         public string GotoPokemonEntry(int dexNum, PokeGeneration gen)
         {
-            throw new NotImplementedException();
+            string pkmName = manager.GetNameById(dexNum);
+            string paddedDexNum = Util.To3DigitStr(dexNum);
+
+            if (pkmName != null)
+            {
+                string smogonName;
+
+                if (pokeNameAlias.ContainsKey(pkmName))
+                    smogonName = pokeNameAlias[pkmName];
+                else
+                    smogonName = pkmName;
+
+                string url = "https://www.smogon.com/" + GEN_URL_MAP[gen] + "/pokemon/" + smogonName;               
+                Process.Start(url);
+                lastSearchSuccess = true;
+                if (ApiAliases.PokeNameAliases.ContainsKey(pkmName))
+                {
+                    pkmName = ApiAliases.PokeNameAliases[pkmName][0];
+                    pkmName = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pkmName);
+                }
+                return "Opening " + pkmName + "\'s entry on Smogon.";
+            }
+            else
+            {
+                lastSearchSuccess = false;
+                return "A Pokemon of ID #" + paddedDexNum + " was not found.";
+            }
         }
 
         public string GotoPokemonEntry(string pokemon, PokeGeneration gen)
