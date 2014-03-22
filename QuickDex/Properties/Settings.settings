@@ -11,5 +11,8 @@
     <Setting Name="DefaultGeneration" Type="System.String" Scope="User">
       <Value Profile="(Default)">RBY</Value>
     </Setting>
+    <Setting Name="Shortcut" Type="System.String" Scope="User">
+      <Value Profile="(Default)">WinQ</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -115,6 +115,7 @@
     <Compile Include="SettingsWnd.Designer.cs">
       <DependentUpon>SettingsWnd.cs</DependentUpon>
     </Compile>
+    <Compile Include="ShortcutEnum.cs" />
     <Compile Include="SmogonReferrer.cs" />
     <Compile Include="Util.cs" />
     <EmbeddedResource Include="MainWnd.resx">

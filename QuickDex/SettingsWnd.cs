@@ -26,7 +26,11 @@ namespace QuickDex
 
             var genNames = Enum.GetNames(typeof(PokeGeneration));
             this.defaultGenSelect.DataSource = genNames;
-            this.defaultGenSelect.SelectedItem = (string) Settings.Default["DefaultGeneration"];
+            this.defaultGenSelect.SelectedItem = (string)Settings.Default["DefaultGeneration"];
+
+            var shortcuts = Enum.GetNames(typeof(ShortcutEnum));
+            this.shortcutSelect.DataSource = shortcuts;
+            this.shortcutSelect.SelectedItem = (string)Settings.Default["Shortcut"];
         }
 
         private void applyBtn_Click(object sender, EventArgs e)
@@ -34,6 +38,7 @@ namespace QuickDex
             //MessageBox.Show(defaultSrcSelect.SelectedItem.ToString() + "\n" + defaultGenSelect.SelectedItem.ToString());
             Settings.Default["DefaultSearchSrc"] = this.defaultSrcSelect.SelectedItem;
             Settings.Default["DefaultGeneration"] = this.defaultGenSelect.SelectedItem;
+            Settings.Default["Shortcut"] = this.shortcutSelect.SelectedItem;
             Settings.Default.Save();
             this.Close();
         }

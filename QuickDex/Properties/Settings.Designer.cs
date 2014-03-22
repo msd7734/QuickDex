@@ -58,5 +58,17 @@ namespace QuickDex.Properties {
                 this["DefaultGeneration"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("WinQ")]
+        public string Shortcut {
+            get {
+                return ((string)(this["Shortcut"]));
+            }
+            set {
+                this["Shortcut"] = value;
+            }
+        }
     }
 }
