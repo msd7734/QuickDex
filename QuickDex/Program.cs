@@ -76,8 +76,8 @@ namespace QuickDex
             using (Cache c = myCache)
             using (KeyHookManager hookManager = new KeyHookManager(wnd.ShortcutFormShow))
             {
-                
                 Application.Run(wnd);
+                c.CachePokedex(myPokedex);
             }
 
             /*
