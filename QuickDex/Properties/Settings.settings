@@ -5,5 +5,11 @@
     <Setting Name="Cache" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="DefaultSearchSrc" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Bulbapedia</Value>
+    </Setting>
+    <Setting Name="DefaultGeneration" Type="System.String" Scope="User">
+      <Value Profile="(Default)">RBY</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

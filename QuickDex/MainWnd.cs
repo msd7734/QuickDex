@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using QuickDex.Properties;
 
 namespace QuickDex
 {
@@ -71,6 +72,10 @@ namespace QuickDex
 
             var genNames = Enum.GetNames(typeof(PokeGeneration));
             this.genSelect.DataSource = genNames;
+
+            //Set dropdowns to user-defined default values
+            this.searchSrcSelect.SelectedItem = Settings.Default["DefaultSearchSrc"];
+            this.genSelect.SelectedItem = Settings.Default["DefaultGeneration"];
         }
 
         #region Public Methods
@@ -242,6 +247,12 @@ namespace QuickDex
             isVisible = false;
             this.ShowInTaskbar = false;
             notifyIcon.ShowBalloonTip(1000, "QuickDex", "QuickDex is now running! Use the Win+Q shortcut to perform a quick search.", ToolTipIcon.Info);
+        }
+
+        private void settingsLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            SettingsWnd settings = new SettingsWnd(this.searchOptions);
+            settings.ShowDialog(this);
         }
 
        

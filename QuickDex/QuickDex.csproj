@@ -109,6 +109,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerebiiReferrer.cs" />
+    <Compile Include="SettingsWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsWnd.Designer.cs">
+      <DependentUpon>SettingsWnd.cs</DependentUpon>
+    </Compile>
     <Compile Include="SmogonReferrer.cs" />
     <Compile Include="Util.cs" />
     <EmbeddedResource Include="MainWnd.resx">
@@ -123,6 +129,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="SettingsWnd.resx">
+      <DependentUpon>SettingsWnd.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
