@@ -154,6 +154,17 @@ namespace QuickDex
             if (forceSearchBoxFocus)
                 searchBox.Focus();
         }
+
+        /// <summary>
+        /// Change the state of all controls on MainWnd to the values defined
+        /// in Settings.
+        /// </summary>
+        private void ResetControls()
+        {
+            //Set dropdowns to user-defined default values
+            this.searchSrcSelect.SelectedItem = Settings.Default["DefaultSearchSrc"];
+            this.genSelect.SelectedItem = Settings.Default["DefaultGeneration"];
+        }
         #endregion
 
         #region Event Handlers
@@ -252,10 +263,11 @@ namespace QuickDex
         private void settingsLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             SettingsWnd settings = new SettingsWnd(this.searchOptions);
-            settings.ShowDialog(this);
-        }
+            DialogResult result = settings.ShowDialog(this);
 
-       
+            if (result == DialogResult.OK)
+                ResetControls();
+        }
     }
 
         #endregion

@@ -40,11 +40,13 @@ namespace QuickDex
             Settings.Default["DefaultGeneration"] = this.defaultGenSelect.SelectedItem;
             Settings.Default["Shortcut"] = this.shortcutSelect.SelectedItem;
             Settings.Default.Save();
+            this.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.Close();
         }
 
         private void cancelBtn_Click(object sender, EventArgs e)
         {
+            this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.Close();
         }
     }
