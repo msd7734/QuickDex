@@ -247,6 +247,23 @@ namespace QuickDex
             return pokedex;
         }
 
+        /// <summary>
+        /// Delete the cache in the file system.
+        /// </summary>
+        public void Delete()
+        {
+            try
+            {
+                File.Delete(FileName);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message + "\nYou may have to manually delete your .cache file for the application to function properly.",
+                    "Cache delete failed",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         public void Dispose()
         {
             //Save MD5 to validate cache on next application run
