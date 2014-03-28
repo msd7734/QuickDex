@@ -1,18 +1,31 @@
 ﻿using System;
 using System.IO;
 using System.Diagnostics;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using QuickDex.Pokeapi;
 
 namespace QuickDex
 {
     class Util
     {
-
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         private static extern IntPtr GetForegroundWindow();
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern int GetWindowThreadProcessId(IntPtr handle, out int processId);
+
+        //Mapping of lower and upper national id ranges for each generation
+        private static IDictionary<PokeGeneration, Tuple<int, int>> GenerationRanges =
+            new Dictionary<PokeGeneration, Tuple<int, int>>
+            {
+                { PokeGeneration.RBY, Tuple.Create(1, 151) },
+                { PokeGeneration.GSC, Tuple.Create(152, 251) },
+                { PokeGeneration.RSE, Tuple.Create(252, 386) },
+                { PokeGeneration.DPP, Tuple.Create(387, 493) },
+                { PokeGeneration.BW, Tuple.Create(494, 649) },
+                { PokeGeneration.XY, Tuple.Create(650, 719) }
+            };
 
         public delegate void VoidDelegate();
         
@@ -42,9 +55,45 @@ namespace QuickDex
             return To3DigitStr(int.Parse(str));
         }
 
+        /// <summary>
+        /// Check if a .cache file exists in this directory.
+        /// </summary>
+        /// <returns>True if .cache exists, false otherwise.</returns>
         public static bool CacheExists()
         {
             return (File.Exists(Cache.FileName));
+        }
+
+        /// <summary>
+        /// Determine if a given pokemon falls within a given generation.
+        /// </summary>
+        /// <param name="pokemon">BasePokemon to check</param>
+        /// <param name="gen">PokeGeneration to check</param>
+        /// <returns>True if pokemon's id falls within gen, false otherwise</returns>
+        public static bool IsPokemonInGeneration(BasePokemon pokemon, PokeGeneration gen)
+        {
+            int lower = GenerationRanges[gen].Item1;
+            int upper = GenerationRanges[gen].Item2;
+            int id = pokemon.national_id;
+            return (id >= lower && id <= upper);
+        }
+
+        /// <summary>
+        /// Get the earliest vaild generation for a given pokemon
+        /// </summary>
+        /// <param name="pokemon">BasePokemon to check</param>
+        /// <returns>PokeGeneration enum</returns>
+        public static PokeGeneration GetEarliestGeneration(BasePokemon pokemon)
+        {
+            PokeGeneration res = PokeGeneration.RBY;
+            int i = (int)res;
+            while (!IsPokemonInGeneration(pokemon, res) && i < Enum.GetValues(typeof(PokeGeneration)).Length)
+            {
+                ++i;
+                res = (PokeGeneration)i;
+            }
+
+            return res;
         }
 
         /// <summary>
