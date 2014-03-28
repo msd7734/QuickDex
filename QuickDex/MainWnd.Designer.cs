@@ -35,13 +35,13 @@
             this.searchBtn = new System.Windows.Forms.Button();
             this.searchBox = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.settingsLink = new System.Windows.Forms.LinkLabel();
             this.genSelect = new System.Windows.Forms.ComboBox();
             this.generationLbl = new System.Windows.Forms.Label();
             this.searchSourceLbl = new System.Windows.Forms.Label();
             this.searchSrcSelect = new System.Windows.Forms.ComboBox();
             this.msgDisplay = new System.Windows.Forms.RichTextBox();
             this.resultsLbl = new System.Windows.Forms.Label();
-            this.settingsLink = new System.Windows.Forms.LinkLabel();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -98,6 +98,16 @@
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Options";
+            // 
+            // settingsLink
+            // 
+            this.settingsLink.AutoSize = true;
+            this.settingsLink.Location = new System.Drawing.Point(6, 107);
+            this.settingsLink.Name = "settingsLink";
+            this.settingsLink.Size = new System.Drawing.Size(95, 13);
+            this.settingsLink.TabIndex = 3;
+            this.settingsLink.Text = "QuickDex Settings";
+            this.settingsLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.settingsLink_LinkClicked);
             // 
             // genSelect
             // 
@@ -158,17 +168,6 @@
             this.resultsLbl.Size = new System.Drawing.Size(42, 13);
             this.resultsLbl.TabIndex = 2;
             this.resultsLbl.Text = "Results";
-            // 
-            // settingsLink
-            // 
-            this.settingsLink.AutoSize = true;
-            this.settingsLink.Location = new System.Drawing.Point(6, 107);
-            this.settingsLink.Name = "settingsLink";
-            this.settingsLink.Size = new System.Drawing.Size(95, 13);
-            this.settingsLink.TabIndex = 3;
-            this.settingsLink.TabStop = true;
-            this.settingsLink.Text = "QuickDex Settings";
-            this.settingsLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.settingsLink_LinkClicked);
             // 
             // MainWnd
             // 

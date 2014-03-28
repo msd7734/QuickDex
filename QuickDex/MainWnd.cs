@@ -257,6 +257,8 @@ namespace QuickDex
             this.Visible = false;
             isVisible = false;
             this.ShowInTaskbar = false;
+            //Setting TabStop in designer doesn't work for some reason...
+            this.settingsLink.TabStop = false;
             string shortcutStr = Settings.Default["Shortcut"].ToString();
             notifyIcon.ShowBalloonTip(1000, "QuickDex", "QuickDex is now running! Use the " + shortcutStr + " shortcut to perform a quick search.", ToolTipIcon.Info);
         }
