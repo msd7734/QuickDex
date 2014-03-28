@@ -176,7 +176,7 @@ namespace QuickDex
                     SQLiteParameter pkmId = new SQLiteParameter("@pkmId", System.Data.DbType.String);
                     SQLiteParameter pkmResUri = new SQLiteParameter("@pkmResUri", System.Data.DbType.String);
 
-                    foreach (Pokemon pkm in new List<Pokemon>(pokedex.pokemon))
+                    foreach (BasePokemon pkm in new List<BasePokemon>(pokedex.pokemon))
                     {
                         pkmName.Value = pkm.name;
                         pkmId.Value = pkm.national_id;
@@ -224,11 +224,11 @@ namespace QuickDex
                     }
 
                     reader = selPkm.ExecuteReader();
-                    List<Pokemon> pkm = new List<Pokemon>();
+                    List<BasePokemon> pkm = new List<BasePokemon>();
 
                     while (reader.Read())
                     {
-                        Pokemon p = new Pokemon();
+                        BasePokemon p = new BasePokemon();
                         //national_id is not stored, it's computed on each call from the resource_uri
                         //no need to set this but it may be slower, think of an alternative
                         //p.national_id = reader.GetInt32(PokemonCol["national_id"]);
@@ -238,7 +238,7 @@ namespace QuickDex
                         pkm.Add(p);
                     }
 
-                    pokedex.pokemon = pkm.ToArray<Pokemon>();
+                    pokedex.pokemon = pkm.ToArray<BasePokemon>();
                 }
 
                 con.Close();

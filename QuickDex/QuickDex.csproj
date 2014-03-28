@@ -90,6 +90,7 @@
     <Compile Include="Cache.cs" />
     <Compile Include="KeyHookManager.cs" />
     <Compile Include="Pokeapi\ApiAliases.cs" />
+    <Compile Include="Pokeapi\BasePokemon.cs" />
     <Compile Include="PokeManager.cs" />
     <Compile Include="Pokeapi\ApiPokedex.cs" />
     <Compile Include="Pokeapi\ApiPokemon.cs" />
