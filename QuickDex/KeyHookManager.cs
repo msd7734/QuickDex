@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using WindowsInput;
 using WindowsInput.Native;
+using QuickDex.Properties;
 
 namespace QuickDex
 {
@@ -42,7 +43,7 @@ namespace QuickDex
         private LowLevelKeyboardProc _proc; 
         private IntPtr _hookID = IntPtr.Zero;
         private bool mainKeyIsDown;
-        private bool winKeyIsDown;
+        private bool modKeyIsDown;
 
         private Util.VoidDelegate _externAction;
 
@@ -50,7 +51,7 @@ namespace QuickDex
         {
             //AllocConsole();
             mainKeyIsDown = false;
-            winKeyIsDown = false;
+            modKeyIsDown = false;
             _proc = HookCallback;
             _hookID = SetHook(_proc);
             _externAction = externalCallback;
@@ -76,22 +77,47 @@ namespace QuickDex
             //Less than 0 is invalid and must be passed through.
             if (nCode >= 0)
             {
+                //WARNING: This will probably be a mess.
+                //TODO: Implement a better way to swap out shortcuts
+                // - Will probably simply capture a keyevent and pass it into here/save in settings
+                // - However, will still need special handling for Win Key
                 if (wParam == (IntPtr)WM_KEYDOWN)
                 {
                     int vkCode = Marshal.ReadInt32(lParam);
 
-                    if ((Keys)vkCode == Keys.LWin)
-                        winKeyIsDown = true;
-
-                    if ((Keys)vkCode == Keys.Q)
+                    if (Settings.Default["Shortcut"].ToString() == ShortcutEnum.WinQ.ToString())
                     {
-                        mainKeyIsDown = true;
+                        if ((Keys)vkCode == Keys.LWin)
+                            modKeyIsDown = true;
 
-                        if (winKeyIsDown)
+                        if ((Keys)vkCode == Keys.Q)
                         {
-                            _externAction();
-                            //stop propagation of key event
-                            return (IntPtr)1;
+                            mainKeyIsDown = true;
+
+                            if (modKeyIsDown)
+                            {
+                                _externAction();
+                                //stop propagation of key event
+                                return (IntPtr)1;
+                            }
+                        }
+                    }
+
+                    else if (Settings.Default["Shortcut"].ToString() == ShortcutEnum.CtrlQ.ToString())
+                    {
+                        if ((Keys)vkCode == Keys.LControlKey)
+                            modKeyIsDown = true;
+
+                        if ((Keys)vkCode == Keys.Q)
+                        {
+                            mainKeyIsDown = true;
+
+                            if (modKeyIsDown)
+                            {
+                                _externAction();
+                                //stop propagation of key event
+                                return (IntPtr)1;
+                            }
                         }
                     }
                 }
@@ -100,22 +126,35 @@ namespace QuickDex
                 {
                     int vkCode = Marshal.ReadInt32(lParam);
 
-                    if ((Keys)vkCode == Keys.LWin)
+                    if (Settings.Default["Shortcut"].ToString() == ShortcutEnum.WinQ.ToString())
                     {
-                        winKeyIsDown = false;
-
-                        if (mainKeyIsDown)
+                        if ((Keys)vkCode == Keys.LWin)
                         {
-                            //need to do this to release windows key without opening start menu
-                            InputSimulator sim = new InputSimulator();
-                            sim.Keyboard.KeyDown(VirtualKeyCode.CONTROL);
-                            sim.Keyboard.KeyUp(VirtualKeyCode.LWIN);
-                            sim.Keyboard.KeyUp(VirtualKeyCode.CONTROL);
-                            return (IntPtr)1;
+                            modKeyIsDown = false;
+
+                            if (mainKeyIsDown)
+                            {
+                                //need to do this to release windows key without opening start menu
+                                InputSimulator sim = new InputSimulator();
+                                sim.Keyboard.KeyDown(VirtualKeyCode.CONTROL);
+                                sim.Keyboard.KeyUp(VirtualKeyCode.LWIN);
+                                sim.Keyboard.KeyUp(VirtualKeyCode.CONTROL);
+                                return (IntPtr)1;
+                            }
                         }
+                        else if ((Keys)vkCode == Keys.Q)
+                            mainKeyIsDown = false;
                     }
-                    else if ((Keys)vkCode == Keys.Q)
-                        mainKeyIsDown = false;
+
+                    else if (Settings.Default["Shortcut"].ToString() == ShortcutEnum.CtrlQ.ToString())
+                    {
+                        if ((Keys)vkCode == Keys.LWin)
+                        {
+                            modKeyIsDown = false;
+                        }
+                        else if ((Keys)vkCode == Keys.Q)
+                            mainKeyIsDown = false;
+                    }
                 }
             }
 

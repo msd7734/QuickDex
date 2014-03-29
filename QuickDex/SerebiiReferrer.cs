@@ -50,6 +50,7 @@ namespace QuickDex
 
             if (pkmName != null)
             {
+                gen = Util.ValidateGeneration(dexNum, gen);
                 string url = "http://www.serebii.net/" + GEN_URL_MAP[gen] + "/" + paddedDexNum + ".shtml";
                 Process.Start(url);
                 lastSearchSuccess = true;
@@ -70,6 +71,7 @@ namespace QuickDex
             
             if (pkmId != null)
             {
+                gen = Util.ValidateGeneration((int)pkmId, gen);
                 string paddedDexNum = Util.To3DigitStr((int)pkmId);
                 string url = "http://www.serebii.net/" + GEN_URL_MAP[gen] + "/" + paddedDexNum + ".shtml";
                 Process.Start(url);

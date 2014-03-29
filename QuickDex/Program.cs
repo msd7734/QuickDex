@@ -18,6 +18,13 @@ namespace QuickDex
         [DllImport("kernel32")]
         static extern bool FreeConsole();
 
+        private static void ShowPokeApiFailDialog()
+        {
+            MessageBox.Show("Failed to get a response from Pokeapi. Make sure you have an internet connection and try again.",
+                "Pokeapi request failed",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary
@@ -39,7 +46,11 @@ namespace QuickDex
                     myCache = Cache.InitializeNewCache(true);
                     myPokedex = PokeQuery.GetPokedex();
                     if (myPokedex == null)
-                        Application.Exit();
+                    {
+                        ShowPokeApiFailDialog();
+                        myCache.Delete();
+                        return;
+                    }
                     myCache.CachePokedex(myPokedex);
                 }
                 else
@@ -51,7 +62,11 @@ namespace QuickDex
                 myCache = Cache.InitializeNewCache(true);
                 myPokedex = PokeQuery.GetPokedex();
                 if (myPokedex == null)
-                    Application.Exit();
+                {
+                    ShowPokeApiFailDialog();
+                    myCache.Delete();
+                    return;
+                }
                 myCache.CachePokedex(myPokedex);
             }
 
@@ -63,7 +78,9 @@ namespace QuickDex
             {
                 //new QuickDex(myManager),
                 new BulbapediaReferrer(myManager),
-                new SerebiiReferrer(myManager)
+                new SerebiiReferrer(myManager),
+                new PokemonDbReferrer(myManager),
+                new SmogonReferrer(myManager)
             };
 
             Application.EnableVisualStyles();
@@ -74,8 +91,8 @@ namespace QuickDex
             using (Cache c = myCache)
             using (KeyHookManager hookManager = new KeyHookManager(wnd.ShortcutFormShow))
             {
-                
                 Application.Run(wnd);
+                //c.CachePokedex(myPokedex);
             }
 
             /*

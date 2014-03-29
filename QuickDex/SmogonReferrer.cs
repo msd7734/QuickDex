@@ -5,23 +5,30 @@ using QuickDex.Pokeapi;
 
 namespace QuickDex
 {
-
-    class BulbapediaReferrer : ISearchStrategy
+    class SmogonReferrer : ISearchStrategy
     {
-        private PokeManager manager;
-        private bool? lastSearchSuccess;
+        #region Generation Mapping
+        private static readonly Dictionary<PokeGeneration, string> GEN_URL_MAP
+            = new Dictionary<PokeGeneration, string>
+            {
+                {PokeGeneration.RBY, "rb"},
+                {PokeGeneration.GSC, "gs"},
+                {PokeGeneration.RSE, "rs"},
+                {PokeGeneration.DPP, "dp"},
+                {PokeGeneration.BW, "bw"},
+                {PokeGeneration.XY, "bw"}  //Smogon doesn't yet support XY entries right now; defualt to BW
+            };
+        #endregion
 
         #region Pokemon name aliases
         //For mapping abnormal names to counterparts used by Bulbapedia URLs
         private static readonly Dictionary<string, string> pokeNameAlias
             = new Dictionary<string, string>()
         {
-            { "nidoran-f", "Nidoran♀" },
-            { "nidoran-m", "Nidoran♂" },
-            { "mr-mime", "Mr. Mime" },
+            { "mr-mime", "Mr_Mime" },
             { "deoxys-normal", "Deoxys" },
             { "wormadam-plant", "Wormadam" },
-            { "mime-jr", "Mime Jr." },
+            { "mime-jr", "Mime_Jr" },
             { "giratina-altered", "Giratina" },
             { "shaymin-land", "Shaymin" },
             { "basculin-red-striped", "Basculin" },
@@ -37,11 +44,10 @@ namespace QuickDex
         };
         #endregion
 
-        /// <summary>
-        /// Construct a SearchStrategy for serebii.com
-        /// </summary>
-        /// <param name="manager">The PokeManager to handle search operations</param>
-        public BulbapediaReferrer(PokeManager manager)
+        private PokeManager manager;
+        private bool? lastSearchSuccess;
+
+        public SmogonReferrer(PokeManager manager)
         {
             this.manager = manager;
             lastSearchSuccess = null;
@@ -49,7 +55,7 @@ namespace QuickDex
 
         public string GetName()
         {
-            return "Bulbapedia";
+            return "Smogon";
         }
 
         public bool? IsLastSearchSuccess()
@@ -59,21 +65,28 @@ namespace QuickDex
 
         public string GotoPokemonEntry(int dexNum, PokeGeneration gen)
         {
-            //can only get pages on BP by pokemon name, so need to perform a lookup 
             string pkmName = manager.GetNameById(dexNum);
             string paddedDexNum = Util.To3DigitStr(dexNum);
 
             if (pkmName != null)
             {
-                //alias name to one Bulbapedia expects if there's an alias rule for it
-                List<string> apiNames = new List<string>(pokeNameAlias.Keys);
-                if (apiNames.Contains(pkmName))
-                    pkmName = pokeNameAlias[pkmName];
+                gen = Util.ValidateGeneration(dexNum, gen);
+                
+                string smogonName;
+                if (pokeNameAlias.ContainsKey(pkmName))
+                    smogonName = pokeNameAlias[pkmName];
+                else
+                    smogonName = pkmName;
 
-                string url = "http://bulbapedia.bulbagarden.net/wiki/" + pkmName.ToLower();
+                string url = "https://www.smogon.com/" + GEN_URL_MAP[gen] + "/pokemon/" + smogonName;               
                 Process.Start(url);
                 lastSearchSuccess = true;
-                return "Opening " + pkmName + "\'s entry on Bulbapedia.";
+                if (ApiAliases.PokeNameAliases.ContainsKey(pkmName))
+                {
+                    pkmName = ApiAliases.PokeNameAliases[pkmName][0];
+                    pkmName = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pkmName);
+                }
+                return "Opening " + pkmName + "\'s entry on Smogon.";
             }
             else
             {
@@ -84,24 +97,30 @@ namespace QuickDex
 
         public string GotoPokemonEntry(string pokemon, PokeGeneration gen)
         {
-            //pokemon name can be all lowercase or have first letter capitalized
             int? pkmId = manager.GetIdByName(pokemon);
+
+            string lower = pokemon.ToLower();
+            string apiName;
+
+            if (ApiAliases.AliasesToApiPokeName.ContainsKey(lower))
+                apiName = ApiAliases.AliasesToApiPokeName[lower];
+            else
+                apiName = pokemon;
 
             if (pkmId != null)
             {
-                //map internal alias to external API name
-                if (ApiAliases.AliasesToApiPokeName.ContainsKey(pokemon))
-                    pokemon = ApiAliases.AliasesToApiPokeName[pokemon];
+                gen = Util.ValidateGeneration((int)pkmId, gen);
+                
+                string smogonName;
+                if (pokeNameAlias.ContainsKey(apiName))
+                    smogonName = pokeNameAlias[apiName];
+                else
+                    smogonName = apiName;
 
-                //alias name to one Bulbapedia expects if there's an alias rule for it
-                if (pokeNameAlias.ContainsKey(pokemon))
-                    pokemon = pokeNameAlias[pokemon];
-
-                string paddedDexNum = Util.To3DigitStr((int)pkmId);
-                string url = "http://bulbapedia.bulbagarden.net/wiki/" + pokemon.ToLower();
+                string url = "https://www.smogon.com/" + GEN_URL_MAP[gen] + "/pokemon/" + smogonName;
                 Process.Start(url);
                 lastSearchSuccess = true;
-                return "Opening " + pokemon + "\'s entry on Bulbapedia.";
+                return "Opening " + pokemon + "\'s entry on Smogon.";
             }
             else
             {
@@ -109,7 +128,5 @@ namespace QuickDex
                 return "A Pokemon with the name " + pokemon + " was not found.";
             }
         }
-
-
     }
 }

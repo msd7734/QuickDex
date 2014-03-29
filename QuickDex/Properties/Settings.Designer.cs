@@ -34,5 +34,41 @@ namespace QuickDex.Properties {
                 this["Cache"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Bulbapedia")]
+        public string DefaultSearchSrc {
+            get {
+                return ((string)(this["DefaultSearchSrc"]));
+            }
+            set {
+                this["DefaultSearchSrc"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("RBY")]
+        public string DefaultGeneration {
+            get {
+                return ((string)(this["DefaultGeneration"]));
+            }
+            set {
+                this["DefaultGeneration"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("WinQ")]
+        public string Shortcut {
+            get {
+                return ((string)(this["Shortcut"]));
+            }
+            set {
+                this["Shortcut"] = value;
+            }
+        }
     }
 }

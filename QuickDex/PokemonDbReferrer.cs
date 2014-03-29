@@ -5,23 +5,15 @@ using QuickDex.Pokeapi;
 
 namespace QuickDex
 {
-
-    class BulbapediaReferrer : ISearchStrategy
+    class PokemonDbReferrer : ISearchStrategy
     {
-        private PokeManager manager;
-        private bool? lastSearchSuccess;
-
-        #region Pokemon name aliases
-        //For mapping abnormal names to counterparts used by Bulbapedia URLs
+        #region Pokemon Name Aliases
+        //For mapping abnormal names to counterparts used by PokemonDB URLs
         private static readonly Dictionary<string, string> pokeNameAlias
             = new Dictionary<string, string>()
         {
-            { "nidoran-f", "Nidoran♀" },
-            { "nidoran-m", "Nidoran♂" },
-            { "mr-mime", "Mr. Mime" },
             { "deoxys-normal", "Deoxys" },
             { "wormadam-plant", "Wormadam" },
-            { "mime-jr", "Mime Jr." },
             { "giratina-altered", "Giratina" },
             { "shaymin-land", "Shaymin" },
             { "basculin-red-striped", "Basculin" },
@@ -37,11 +29,10 @@ namespace QuickDex
         };
         #endregion
 
-        /// <summary>
-        /// Construct a SearchStrategy for serebii.com
-        /// </summary>
-        /// <param name="manager">The PokeManager to handle search operations</param>
-        public BulbapediaReferrer(PokeManager manager)
+        PokeManager manager;
+        bool? lastSearchSuccess;
+
+        public PokemonDbReferrer(PokeManager manager)
         {
             this.manager = manager;
             lastSearchSuccess = null;
@@ -49,7 +40,7 @@ namespace QuickDex
 
         public string GetName()
         {
-            return "Bulbapedia";
+            return "Pokemon DB";
         }
 
         public bool? IsLastSearchSuccess()
@@ -59,21 +50,15 @@ namespace QuickDex
 
         public string GotoPokemonEntry(int dexNum, PokeGeneration gen)
         {
-            //can only get pages on BP by pokemon name, so need to perform a lookup 
             string pkmName = manager.GetNameById(dexNum);
             string paddedDexNum = Util.To3DigitStr(dexNum);
 
             if (pkmName != null)
             {
-                //alias name to one Bulbapedia expects if there's an alias rule for it
-                List<string> apiNames = new List<string>(pokeNameAlias.Keys);
-                if (apiNames.Contains(pkmName))
-                    pkmName = pokeNameAlias[pkmName];
-
-                string url = "http://bulbapedia.bulbagarden.net/wiki/" + pkmName.ToLower();
+                string url = "http://pokemondb.net/pokedex/" + pkmName;
                 Process.Start(url);
                 lastSearchSuccess = true;
-                return "Opening " + pkmName + "\'s entry on Bulbapedia.";
+                return "Opening " + pkmName + "\'s entry on PokemonDB.";
             }
             else
             {
@@ -84,24 +69,39 @@ namespace QuickDex
 
         public string GotoPokemonEntry(string pokemon, PokeGeneration gen)
         {
-            //pokemon name can be all lowercase or have first letter capitalized
-            int? pkmId = manager.GetIdByName(pokemon);
+            //PokemonDB seems to be backed by the Pokeapi, so it will use all the API pkm names
+            //Exception: Pokemon with alternate forms (Basculin, Deoxys, etc.) use different names
+           
+            string lower = pokemon.ToLower();
+            string apiName;
 
-            if (pkmId != null)
+            //Get API-defined name if exists
+            if (ApiAliases.AliasesToApiPokeName.ContainsKey(lower))
+                apiName = ApiAliases.AliasesToApiPokeName[lower];
+            else
+                apiName = pokemon;
+
+            int? dexNum = manager.GetIdByName(apiName);
+
+            
+
+            if (dexNum != null)
             {
-                //map internal alias to external API name
-                if (ApiAliases.AliasesToApiPokeName.ContainsKey(pokemon))
-                    pokemon = ApiAliases.AliasesToApiPokeName[pokemon];
+                string url = "http://pokemondb.net/pokedex/";
+                //Set actual name to alias of API name so it works with PokemonDB
+                if (pokeNameAlias.ContainsKey(apiName))
+                {
+                    pokemon = pokeNameAlias[apiName];
+                    url += pokemon;
+                }
+                else
+                {
+                    url += apiName;
+                }
 
-                //alias name to one Bulbapedia expects if there's an alias rule for it
-                if (pokeNameAlias.ContainsKey(pokemon))
-                    pokemon = pokeNameAlias[pokemon];
-
-                string paddedDexNum = Util.To3DigitStr((int)pkmId);
-                string url = "http://bulbapedia.bulbagarden.net/wiki/" + pokemon.ToLower();
                 Process.Start(url);
                 lastSearchSuccess = true;
-                return "Opening " + pokemon + "\'s entry on Bulbapedia.";
+                return "Opening " + pokemon + "\'s entry on PokemonDB.";
             }
             else
             {
@@ -109,7 +109,5 @@ namespace QuickDex
                 return "A Pokemon with the name " + pokemon + " was not found.";
             }
         }
-
-
     }
 }

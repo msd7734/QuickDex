@@ -35,6 +35,7 @@
             this.searchBtn = new System.Windows.Forms.Button();
             this.searchBox = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.settingsLink = new System.Windows.Forms.LinkLabel();
             this.genSelect = new System.Windows.Forms.ComboBox();
             this.generationLbl = new System.Windows.Forms.Label();
             this.searchSourceLbl = new System.Windows.Forms.Label();
@@ -85,6 +86,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.settingsLink);
             this.groupBox2.Controls.Add(this.genSelect);
             this.groupBox2.Controls.Add(this.generationLbl);
             this.groupBox2.Controls.Add(this.searchSourceLbl);
@@ -96,6 +98,16 @@
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Options";
+            // 
+            // settingsLink
+            // 
+            this.settingsLink.AutoSize = true;
+            this.settingsLink.Location = new System.Drawing.Point(6, 107);
+            this.settingsLink.Name = "settingsLink";
+            this.settingsLink.Size = new System.Drawing.Size(95, 13);
+            this.settingsLink.TabIndex = 3;
+            this.settingsLink.Text = "QuickDex Settings";
+            this.settingsLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.settingsLink_LinkClicked);
             // 
             // genSelect
             // 
@@ -202,6 +214,7 @@
         private System.Windows.Forms.Label searchSourceLbl;
         private System.Windows.Forms.Label generationLbl;
         private System.Windows.Forms.ComboBox genSelect;
+        private System.Windows.Forms.LinkLabel settingsLink;
     }
 }
 

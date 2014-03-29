@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace QuickDex.Pokeapi
 {
@@ -14,7 +15,8 @@ namespace QuickDex.Pokeapi
         public DateTime created { get; set; }
         public DateTime modified { get; set; }
         public string name { get; set; }
-        public Pokemon[] pokemon { get; set; }
+        [JsonProperty("Pokemon")]
+        public BasePokemon[] pokemon { get; set; }
         public string resource_uri { get; set; }
 
         public override string ToString()
@@ -22,27 +24,8 @@ namespace QuickDex.Pokeapi
             return name + " (Pokedex):" +
                 "\ncreated: " + created.ToString() +
                 "\nmodified: " + modified.ToString() +
-                "\nresource_uri: " + resource_uri + 
+                "\nresource_uri: " + resource_uri +
                 "\n# Pokemon: " + pokemon.Length.ToString();
         }
     }
-
-    public class Pokemon
-    {
-        public string name { get; set; }
-        public string resource_uri { get; set; }
-        public int national_id
-        {
-            get
-            {
-                //maybe find a way to store this instaed of calculating every time
-                //(it may make searching slow when using the Pokedex)
-                List<string> list = resource_uri.Split('/').ToList();
-                int id = -1;
-                id = int.Parse(list.FirstOrDefault<string>(x => int.TryParse(x, out id)));
-                return id;
-            }
-        }
-    }
-
 }

@@ -27,7 +27,7 @@ namespace QuickDex
             try
             {
                 string res = pokedex.pokemon
-                .First<Pokemon>(p => p.national_id == id)
+                .First<BasePokemon>(p => p.national_id == id)
                 .name;
                 return res;
             }
@@ -48,7 +48,7 @@ namespace QuickDex
             try
             {
                 //Create list of both raw pokemon names (directly from the API) and aliases
-                var rawNames = pokedex.pokemon.Select<Pokemon,string>(p => p.name);
+                var rawNames = pokedex.pokemon.Select<BasePokemon,string>(p => p.name);
                 var validNames = new List<string>(rawNames);
                 validNames.AddRange( ApiAliases.PokeNameAliases.Values.SelectMany<List<string>,string>(x => x) );
 
@@ -59,7 +59,7 @@ namespace QuickDex
                     lower = ApiAliases.AliasesToApiPokeName[lower];
 
                 int res = pokedex.pokemon
-                    .First<Pokemon>(p => p.name == lower)
+                    .First<BasePokemon>(p => p.name == lower)
                     .national_id;
 
                 return res;

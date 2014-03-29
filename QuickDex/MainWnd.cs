@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using QuickDex.Properties;
 
 namespace QuickDex
 {
@@ -71,6 +72,10 @@ namespace QuickDex
 
             var genNames = Enum.GetNames(typeof(PokeGeneration));
             this.genSelect.DataSource = genNames;
+
+            //Set dropdowns to user-defined default values
+            this.searchSrcSelect.SelectedItem = Settings.Default["DefaultSearchSrc"];
+            this.genSelect.SelectedItem = Settings.Default["DefaultGeneration"];
         }
 
         #region Public Methods
@@ -148,6 +153,17 @@ namespace QuickDex
 
             if (forceSearchBoxFocus)
                 searchBox.Focus();
+        }
+
+        /// <summary>
+        /// Change the state of all controls on MainWnd to the values defined
+        /// in Settings.
+        /// </summary>
+        private void ResetControls()
+        {
+            //Set dropdowns to user-defined default values
+            this.searchSrcSelect.SelectedItem = Settings.Default["DefaultSearchSrc"];
+            this.genSelect.SelectedItem = Settings.Default["DefaultGeneration"];
         }
         #endregion
 
@@ -241,10 +257,20 @@ namespace QuickDex
             this.Visible = false;
             isVisible = false;
             this.ShowInTaskbar = false;
-            notifyIcon.ShowBalloonTip(1000, "QuickDex", "QuickDex is now running! Use the Win+Q shortcut to perform a quick search.", ToolTipIcon.Info);
+            //Setting TabStop in designer doesn't work for some reason...
+            this.settingsLink.TabStop = false;
+            string shortcutStr = Settings.Default["Shortcut"].ToString();
+            notifyIcon.ShowBalloonTip(1000, "QuickDex", "QuickDex is now running! Use the " + shortcutStr + " shortcut to perform a quick search.", ToolTipIcon.Info);
         }
 
-       
+        private void settingsLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            SettingsWnd settings = new SettingsWnd(this.searchOptions);
+            DialogResult result = settings.ShowDialog(this);
+
+            if (result == DialogResult.OK)
+                ResetControls();
+        }
     }
 
         #endregion

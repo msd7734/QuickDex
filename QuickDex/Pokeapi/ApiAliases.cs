@@ -22,9 +22,9 @@ namespace QuickDex.Pokeapi
         public static readonly Dictionary<string, List<string>> PokeNameAliases
             = new Dictionary<string, List<string>>()
         {
-            { "nidoran-f", new List<string>() { "nidoran f", "nidoran(f)", "nidoran (f)", "nidoran♀" }},
-            { "nidoran-m", new List<string>() { "nidoran m", "nidoran(m)", "nidoran (m)", "nidoran♂", "nidoran"}},
-            { "mr-mime", new List<string>() { "mr.mime", "mr. mime", "mr mime" }},
+            { "nidoran-f", new List<string>() { "nidoran♀", "nidoran f", "nidoran(f)", "nidoran (f)" }},
+            { "nidoran-m", new List<string>() { "nidoran♂", "nidoran m", "nidoran(m)", "nidoran (m)", "nidoran"}},
+            { "mr-mime", new List<string>() {  "mr. mime", "mr mime", "mr.mime" }},
             { "deoxys-normal", new List<string>() { "deoxys" }},
             { "wormadam-plant", new List<string>() { "wormadam" }},
             { "mime-jr", new List<string>() { "mime jr", "mime jr." }},
