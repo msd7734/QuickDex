@@ -2,8 +2,10 @@
 using System.IO;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using QuickDex.Pokeapi;
+using QuickDex.Exceptions;
 
 namespace QuickDex
 {
@@ -16,7 +18,7 @@ namespace QuickDex
         private static extern int GetWindowThreadProcessId(IntPtr handle, out int processId);
 
         //Mapping of lower and upper national id ranges for each generation
-        private static IDictionary<PokeGeneration, Tuple<int, int>> GenerationRanges =
+        public static IDictionary<PokeGeneration, Tuple<int, int>> GenerationRanges =
             new Dictionary<PokeGeneration, Tuple<int, int>>
             {
                 { PokeGeneration.RBY, Tuple.Create(1, 151) },
@@ -67,15 +69,48 @@ namespace QuickDex
         /// <summary>
         /// Determine if a given pokemon falls within a given generation.
         /// </summary>
+        /// <param name="nationalId">National Id of the pokemon to check</param>
+        /// <param name="gen">PokeGeneration to check</param>
+        /// <returns>True if nationalId falls within gen, false otherwise</returns>
+        public static bool IsPokemonInGeneration(int nationalId, PokeGeneration gen)
+        {
+            int lower = 1;
+            int upper = GenerationRanges[gen].Item2;
+            return (nationalId >= lower && nationalId <= upper);
+        }
+
+        /// <summary>
+        /// Determine if a given pokemon falls within a given generation.
+        /// </summary>
         /// <param name="pokemon">BasePokemon to check</param>
         /// <param name="gen">PokeGeneration to check</param>
         /// <returns>True if pokemon's id falls within gen, false otherwise</returns>
         public static bool IsPokemonInGeneration(BasePokemon pokemon, PokeGeneration gen)
         {
-            int lower = GenerationRanges[gen].Item1;
-            int upper = GenerationRanges[gen].Item2;
-            int id = pokemon.national_id;
-            return (id >= lower && id <= upper);
+            return IsPokemonInGeneration(pokemon.national_id, gen);
+        }
+
+        /// <summary>
+        /// Get the earliest vaild generation for a given national ID
+        /// </summary>
+        /// <param name="nationalId">National ID to check</param>
+        /// <returns>PokeGeneration enum</returns>
+        public static PokeGeneration GetEarliestGeneration(int nationalId)
+        {
+            PokeGeneration mostRecentGen = GenerationRanges.Keys.Last<PokeGeneration>();
+
+            if (nationalId > GenerationRanges[mostRecentGen].Item2)
+                throw new BadNationalIdException();
+
+            PokeGeneration res = PokeGeneration.RBY;
+            int i = (int)res;
+            while (!IsPokemonInGeneration(nationalId, res) && i < Enum.GetValues(typeof(PokeGeneration)).Length)
+            {
+                ++i;
+                res = (PokeGeneration)i;
+            }
+
+            return res;
         }
 
         /// <summary>
@@ -85,15 +120,33 @@ namespace QuickDex
         /// <returns>PokeGeneration enum</returns>
         public static PokeGeneration GetEarliestGeneration(BasePokemon pokemon)
         {
-            PokeGeneration res = PokeGeneration.RBY;
-            int i = (int)res;
-            while (!IsPokemonInGeneration(pokemon, res) && i < Enum.GetValues(typeof(PokeGeneration)).Length)
-            {
-                ++i;
-                res = (PokeGeneration)i;
-            }
+            return GetEarliestGeneration(pokemon.national_id);
+            
+        }
 
-            return res;
+        /// <summary>
+        /// Produce a valid pokemon generation from a national ID.
+        /// </summary>
+        /// <param name="nationalId">National ID to check</param>
+        /// <param name="gen">PokeGeneration to check</param>
+        /// <returns>Passed in gen if valid, the earliest valid generation otherwise.</returns>
+        public static PokeGeneration ValidateGeneration(int nationalId, PokeGeneration gen)
+        {
+            if (!Util.IsPokemonInGeneration(nationalId, gen))
+                return Util.GetEarliestGeneration(nationalId);
+            else
+                return gen;
+        }
+
+        /// <summary>
+        /// Produce a valid pokemon generation from a BasePokemon.
+        /// </summary>
+        /// <param name="pokemon">BasePokemon whose national ID to check</param>
+        /// <param name="gen">PokeGeneration to check</param>
+        /// <returns>Passed in gen if valid, the earliest valid generation otherwise.</returns>
+        public static PokeGeneration ValidateGeneration(BasePokemon pokemon, PokeGeneration gen)
+        {
+            return ValidateGeneration(pokemon.national_id, gen);
         }
 
         /// <summary>

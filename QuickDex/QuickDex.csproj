@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cache.cs" />
+    <Compile Include="Exceptions\BadNationalIdException.cs" />
     <Compile Include="KeyHookManager.cs" />
     <Compile Include="Pokeapi\ApiAliases.cs" />
     <Compile Include="Pokeapi\BasePokemon.cs" />

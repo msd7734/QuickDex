@@ -70,8 +70,9 @@ namespace QuickDex
 
             if (pkmName != null)
             {
+                gen = Util.ValidateGeneration(dexNum, gen);
+                
                 string smogonName;
-
                 if (pokeNameAlias.ContainsKey(pkmName))
                     smogonName = pokeNameAlias[pkmName];
                 else
@@ -108,8 +109,9 @@ namespace QuickDex
 
             if (pkmId != null)
             {
+                gen = Util.ValidateGeneration((int)pkmId, gen);
+                
                 string smogonName;
-
                 if (pokeNameAlias.ContainsKey(apiName))
                     smogonName = pokeNameAlias[apiName];
                 else
