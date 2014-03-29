@@ -1,0 +1,20 @@
+QuickDex Changelog
+======================
+
+beta-1.1
+=========
+Additions:
+- New sites (PokemonDB and Smogon)
+- Settings menu
+- Ability to set and save default search sources and generations
+- Ability to switch between Win+Q and Ctrl+Q shortcuts
+
+Bugfixes:
+- Searching for a Pokemon with the wrong generation will no longer send you to a 404 page,
+  instead it will default to the first generation that pokemon appeared in
+- Notifies user when a cache can't be built due to internet issues
+
+
+beta-1.0
+========
+Initial release
