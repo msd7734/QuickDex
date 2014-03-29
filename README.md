@@ -10,7 +10,9 @@ State of Implementation
 =======================
 This project is currently in a beta releaase. Basic functionality is fully implemented. This includes:
  - All UI behavior (this is a System Tray application)
- - Ability to search Pokemon by both name and national dex number on Bulbapedia and Serebii
+ - Ability to search Pokemon by both name and national dex number on several sites
+ - Switch between shortcut options
+ - Some other customization options (set/save default search options)
 
 Planned features include:
  - Search Pokemon abilities, moves, types, etc.
