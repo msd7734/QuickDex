@@ -24,7 +24,7 @@ FAQ
 ===
 Q: How do I do a search?
 
-A: Find the Pokeball icon in your System Tray, right click, select "Show". Or, use the shortcut Windows Key+Q at any time. Note to Windows 8 users: WIN+Q opens the Metro search. QuickDex will override this functionality while it's running. Custom hotkeys are a planned feature which will fix this limitation. 
+A: Find the Pokeball icon in your System Tray, right click, select "Show". Or, use the shortcut Windows Key+Q at any time. Note to Windows 8 users: WIN+Q opens the Metro search. QuickDex will override this functionality while it's running. Custom hotkeys are a planned feature which will fix this limitation. Currently, if you are having problems with the default Win+Q shortcut, you can toggle a setting to make the shortcut Ctrl+Q. This will override any Ctrl+Q shortcuts in other applications you may be using while the QuickDex is running, however.
 
 
 Q: I found a bug, what do I do?
