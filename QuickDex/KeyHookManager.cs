@@ -148,7 +148,7 @@ namespace QuickDex
 
                     else if (Settings.Default["Shortcut"].ToString() == ShortcutEnum.CtrlQ.ToString())
                     {
-                        if ((Keys)vkCode == Keys.LWin)
+                        if ((Keys)vkCode == Keys.LControlKey)
                         {
                             modKeyIsDown = false;
                         }
