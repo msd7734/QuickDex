@@ -109,9 +109,9 @@ namespace QuickDex
             //There is some mysterious timing issue here that makes the form not activate when isVisible = true
             //20ms is about the minimum to get fix it consistently, 10ms only works sometimes (wtf???)
             //Maybe one day I'll find out the real reason for this. Until now... Sleep(20) is the solution.
+            //Potential solution: http://stackoverflow.com/questions/853960/
             System.Threading.Thread.Sleep(20);
             ActivateOrShow(true);
-            isVisible = true;
         }
         #endregion
 
@@ -147,6 +147,7 @@ namespace QuickDex
             else
             {
                 this.Show();
+                isVisible = true;
                 searchBox.Focus();
                 return;
             }
@@ -177,7 +178,6 @@ namespace QuickDex
         private void MainWnd_TrayMenuShow(object sender, EventArgs e)
         {
             ActivateOrShow();
-            isVisible = true;
         }
 
         //TODO: Upon searching, remember to disable the form controls until the search is done.
@@ -216,9 +216,7 @@ namespace QuickDex
             }
         }
 
-        //Turns out this isn't needed; just set the AcceptBtn property to use searchBtn_Click
-        //Keeping it around to handle potential future need to consume keypresses
-        //To do this, set MainWnd.KeyPreview = true
+        //To allow this handler to be called, set MainWnd.KeyPreview = true
         private void MainWnd_KeyPress(object sender, KeyPressEventArgs e)
         {
             if ((Keys)e.KeyChar == Keys.Escape)
@@ -249,7 +247,6 @@ namespace QuickDex
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             ActivateOrShow();
-            isVisible = true;
         }
 
         private void MainWnd_Load(object sender, EventArgs e)
@@ -270,6 +267,12 @@ namespace QuickDex
 
             if (result == DialogResult.OK)
                 ResetControls();
+        }
+
+        private void MainWnd_Shown(object sender, EventArgs e)
+        {
+            //This may potentially fix some timing issues
+            this.Activate();
         }
     }
 

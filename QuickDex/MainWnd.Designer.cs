@@ -106,6 +106,7 @@
             this.settingsLink.Name = "settingsLink";
             this.settingsLink.Size = new System.Drawing.Size(95, 13);
             this.settingsLink.TabIndex = 3;
+            this.settingsLink.TabStop = true;
             this.settingsLink.Text = "QuickDex Settings";
             this.settingsLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.settingsLink_LinkClicked);
             // 
@@ -191,6 +192,7 @@
             this.Text = "QuickDex";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWnd_FormClosing);
             this.Load += new System.EventHandler(this.MainWnd_Load);
+            this.Shown += new System.EventHandler(this.MainWnd_Shown);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.MainWnd_KeyPress);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
