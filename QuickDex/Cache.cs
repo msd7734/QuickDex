@@ -24,6 +24,8 @@ namespace QuickDex
 
         private static readonly string CON_STR = "Data Source=" + FileName + ";Version=3;MultipleActiveResultSets=False";
 
+        private CacheFileWatcher watcher;
+
         #region Stored queries
         private static readonly string initQuery =
             @"CREATE TABLE IF NOT EXISTS [Pokedex] (
@@ -73,7 +75,10 @@ namespace QuickDex
         };
         #endregion
 
-        protected Cache() { }
+        protected Cache()
+        {
+            watcher = null;
+        }
 
         /// <summary>
         /// Initialize a new Cache and return it.
@@ -82,8 +87,6 @@ namespace QuickDex
         /// <returns></returns>
         public static Cache InitializeNewCache(bool forceNew)
         {
-            Cache cache = new Cache();
-
             string conStr = CON_STR;
             if (forceNew)
                 conStr += ";New=True";
@@ -101,7 +104,7 @@ namespace QuickDex
                 }
             }
 
-            return cache;
+            return new Cache();
         }
 
         /// <summary>
@@ -264,8 +267,32 @@ namespace QuickDex
             }
         }
 
+        /// <summary>
+        /// Lock this cache so that it can't be modified until disposed.
+        /// </summary>
+        public void Lock()
+        {
+            ForceDisposeSQLite();
+            watcher = new CacheFileWatcher(FileName);
+        }
+
+        /// <summary>
+        /// Unlock this cache and allow it to be modified again.
+        /// </summary>
+        public void UnLock()
+        {
+            if (watcher != null)
+            {
+                watcher.Dispose();
+                watcher = null;
+            }
+        }
+
         public void Dispose()
         {
+            //Release lock on .cache file
+            watcher.Dispose();
+
             //Save MD5 to validate cache on next application run
             string md5 = ComputeMD5String();
             Properties.Settings.Default.Cache = md5;
@@ -285,5 +312,49 @@ namespace QuickDex
             Thread.Sleep(50);
         }
         #endregion
+
+        #region Internal Classes
+        /// <summary>
+        /// This will spawn a worker thread that will hold the cache file open until
+        /// being disposed of. This is to prevent any unexpected changes being made
+        /// to the cache at runtime.
+        /// NOTE: Currently the entire cache is updated and read into memory when the
+        /// Quickdex starts. If this changes, and the cache file is read further along
+        /// in the execution, this idea may need to be abandoned.
+        /// </summary>
+        internal class CacheFileWatcher : IDisposable
+        {
+            private static ManualResetEvent resetEvent = new ManualResetEvent(false);
+            private RegisteredWaitHandle regWaitHandle;
+
+            internal CacheFileWatcher(string fileName)
+            {
+                LockCacheFile(fileName);
+            }
+
+            private void LockCacheFile(string fileName)
+            {
+                //Using RegisterWaitForSingleObject makes sure we aren't spinning our wheels
+                regWaitHandle = ThreadPool.RegisterWaitForSingleObject(resetEvent,
+                    ReleaseCacheFile,
+                    File.OpenWrite(fileName),
+                    -1,
+                    true);
+            }
+
+            private void ReleaseCacheFile(object stream, bool timedOut)
+            {
+                FileStream fs = (FileStream)stream;
+                fs.Close();
+            }
+
+            public void Dispose()
+            {
+                resetEvent.Set();
+                regWaitHandle.Unregister(resetEvent);
+            }
+        }
+        #endregion
+
     }
 }

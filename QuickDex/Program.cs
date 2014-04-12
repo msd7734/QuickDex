@@ -87,6 +87,7 @@ namespace QuickDex
             Application.SetCompatibleTextRenderingDefault(false);
 
             MainWnd wnd = new MainWnd(searchStrats);
+            myCache.Lock();
 
             using (Cache c = myCache)
             using (KeyHookManager hookManager = new KeyHookManager(wnd.ShortcutFormShow))
