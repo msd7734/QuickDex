@@ -185,7 +185,7 @@ namespace QuickDex
         private void searchBtn_Click(object sender, EventArgs e)
         {
             //Assume unintentional search if empty search string
-            if (searchBox.Text == String.Empty)
+            if (searchBox.Text == string.Empty || searchBox.Text.Trim() == string.Empty)
                 return;
 
             int index = this.searchSrcSelect.SelectedIndex;
@@ -211,7 +211,6 @@ namespace QuickDex
             }
             catch (NotImplementedException nie)
             {
-
                 ShowMsg(nie.Message, COLOR_FAIL);
             }
         }
