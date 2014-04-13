@@ -12,19 +12,39 @@ namespace QuickDex.Pokeapi
     /// </summary>
     public class BasePokemon
     {
-        public string name { get; set; }
-        public string resource_uri { get; set; }
-        public int national_id
+        //BasePokemon's members are backed by private fields because having
+        //only properties will cause an infinite loop when trying to instantiate
+        //a national_id by parsing the resource_uri.
+        private string _name;
+        private string _resource_uri;
+        private int _national_id;
+
+        public string name
         {
-            get
+            get { return _name; }
+            set { _name = value; }
+        }
+        public string resource_uri {
+            get { return _resource_uri; }
+            
+            set
             {
-                //maybe find a way to store this instaed of calculating every time
-                //(it may make searching slow when using the Pokedex)
-                List<string> list = resource_uri.Split('/').ToList();
+                List<string> list = value.Split('/').ToList();
                 int id = -1;
                 id = int.Parse(list.FirstOrDefault<string>(x => int.TryParse(x, out id)));
-                return id;
+                //TODO: MalformedResUriException? It would extend ArgumentException but is it really
+                //always an argument?
+                if (id == null)
+                    throw new ArgumentException("The resource uri " + value + " was invalid.");
+                _resource_uri = value;
+                _national_id = id;
             }
+        }
+
+        public int national_id
+        {
+            get { return _national_id; }
+            set { _national_id = value; }
         }
     }
 }
