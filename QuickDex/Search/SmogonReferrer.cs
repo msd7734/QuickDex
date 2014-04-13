@@ -3,17 +3,32 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using QuickDex.Pokeapi;
 
-namespace QuickDex
+namespace QuickDex.Search
 {
-    class PokemonDbReferrer : ISearchStrategy
+    class SmogonReferrer : ISearchStrategy
     {
-        #region Pokemon Name Aliases
-        //For mapping abnormal names to counterparts used by PokemonDB URLs
+        #region Generation Mapping
+        private static readonly Dictionary<PokeGeneration, string> GEN_URL_MAP
+            = new Dictionary<PokeGeneration, string>
+            {
+                {PokeGeneration.RBY, "rb"},
+                {PokeGeneration.GSC, "gs"},
+                {PokeGeneration.RSE, "rs"},
+                {PokeGeneration.DPP, "dp"},
+                {PokeGeneration.BW, "bw"},
+                {PokeGeneration.XY, "bw"}  //Smogon doesn't yet support XY entries right now; defualt to BW
+            };
+        #endregion
+
+        #region Pokemon name aliases
+        //For mapping abnormal names to counterparts used by Bulbapedia URLs
         private static readonly Dictionary<string, string> pokeNameAlias
             = new Dictionary<string, string>()
         {
+            { "mr-mime", "Mr_Mime" },
             { "deoxys-normal", "Deoxys" },
             { "wormadam-plant", "Wormadam" },
+            { "mime-jr", "Mime_Jr" },
             { "giratina-altered", "Giratina" },
             { "shaymin-land", "Shaymin" },
             { "basculin-red-striped", "Basculin" },
@@ -29,10 +44,10 @@ namespace QuickDex
         };
         #endregion
 
-        PokeManager manager;
-        bool? lastSearchSuccess;
+        private PokeManager manager;
+        private bool? lastSearchSuccess;
 
-        public PokemonDbReferrer(PokeManager manager)
+        public SmogonReferrer(PokeManager manager)
         {
             this.manager = manager;
             lastSearchSuccess = null;
@@ -40,7 +55,7 @@ namespace QuickDex
 
         public string GetName()
         {
-            return "Pokemon DB";
+            return "Smogon";
         }
 
         public bool? IsLastSearchSuccess()
@@ -55,10 +70,23 @@ namespace QuickDex
 
             if (pkmName != null)
             {
-                string url = "http://pokemondb.net/pokedex/" + pkmName;
+                gen = Util.ValidateGeneration(dexNum, gen);
+                
+                string smogonName;
+                if (pokeNameAlias.ContainsKey(pkmName))
+                    smogonName = pokeNameAlias[pkmName];
+                else
+                    smogonName = pkmName;
+
+                string url = "https://www.smogon.com/" + GEN_URL_MAP[gen] + "/pokemon/" + smogonName;               
                 Process.Start(url);
                 lastSearchSuccess = true;
-                return "Opening " + pkmName + "\'s entry on PokemonDB.";
+                if (ApiAliases.PokeNameAliases.ContainsKey(pkmName))
+                {
+                    pkmName = ApiAliases.PokeNameAliases[pkmName][0];
+                    pkmName = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pkmName);
+                }
+                return "Opening " + pkmName + "\'s entry on Smogon.";
             }
             else
             {
@@ -69,39 +97,30 @@ namespace QuickDex
 
         public string GotoPokemonEntry(string pokemon, PokeGeneration gen)
         {
-            //PokemonDB seems to be backed by the Pokeapi, so it will use all the API pkm names
-            //Exception: Pokemon with alternate forms (Basculin, Deoxys, etc.) use different names
-           
+            int? pkmId = manager.GetIdByName(pokemon);
+
             string lower = pokemon.ToLower();
             string apiName;
 
-            //Get API-defined name if exists
             if (ApiAliases.AliasesToApiPokeName.ContainsKey(lower))
                 apiName = ApiAliases.AliasesToApiPokeName[lower];
             else
                 apiName = pokemon;
 
-            int? dexNum = manager.GetIdByName(apiName);
-
-            
-
-            if (dexNum != null)
+            if (pkmId != null)
             {
-                string url = "http://pokemondb.net/pokedex/";
-                //Set actual name to alias of API name so it works with PokemonDB
+                gen = Util.ValidateGeneration((int)pkmId, gen);
+                
+                string smogonName;
                 if (pokeNameAlias.ContainsKey(apiName))
-                {
-                    pokemon = pokeNameAlias[apiName];
-                    url += pokemon;
-                }
+                    smogonName = pokeNameAlias[apiName];
                 else
-                {
-                    url += apiName;
-                }
+                    smogonName = apiName;
 
+                string url = "https://www.smogon.com/" + GEN_URL_MAP[gen] + "/pokemon/" + smogonName;
                 Process.Start(url);
                 lastSearchSuccess = true;
-                return "Opening " + pokemon + "\'s entry on PokemonDB.";
+                return "Opening " + pokemon + "\'s entry on Smogon.";
             }
             else
             {

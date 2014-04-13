@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using QuickDex.Pokeapi;
 
-namespace QuickDex
+namespace QuickDex.Search
 {
     public class SerebiiReferrer : ISearchStrategy
     {

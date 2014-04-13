@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using QuickDex.Pokeapi;
 
-namespace QuickDex
+namespace QuickDex.Search
 {
     /// <summary>
     /// Local search on Pokemon information. Causes no redirect, instead returns

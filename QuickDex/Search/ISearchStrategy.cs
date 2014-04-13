@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace QuickDex
+namespace QuickDex.Search
 {
     /// <summary>
     /// Class to perform Pokemon lookup on third party sites.

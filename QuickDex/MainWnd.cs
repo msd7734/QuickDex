@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using QuickDex.Properties;
+using QuickDex.Search;
 
 namespace QuickDex
 {
